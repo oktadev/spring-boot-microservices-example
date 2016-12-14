@@ -10,8 +10,6 @@ import static com.stormpath.spring.config.StormpathWebSecurityConfigurer.stormpa
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.apply(stormpath()).and()
-                .authorizeRequests()
-                .antMatchers("/**").permitAll();
+        http.apply(stormpath());
     }
 }
