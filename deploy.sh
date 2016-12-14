@@ -48,8 +48,8 @@ cd $r && find . -iname pom.xml | xargs -I pom  mvn -DskipTests clean install -f 
 
 # client first
 cd $r/client
-npm install
-ng build --prod --aot
+#rm -rf node_modules
+npm install && ng build --prod --aot
 cd dist
 # todo: replace paths to .js files in dist/sw.js to match generated files
 touch Staticfile
