@@ -9,7 +9,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { BeerListComponent } from './beer-list/beer-list.component';
 import { BeerService } from './shared/beer.service';
 import { GiffyService } from './shared/giffy.service';
-import { AppShellModule } from '@angular/app-shell';
 
 export const appRoutes: Routes = [
   {
