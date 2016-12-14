@@ -27,35 +27,43 @@ function deploy_service(){
 
 
 
-### installation 
+### installation
 
 cd `dirname $0`
 r=`pwd`
 echo $r
 
+## Reset
+cf d -f pwa-beer-catalog-service
+cf d -f pwa-client
+cf d -f pwa-eureka-service
+cf d -f pwa-edge-service
+cf ds -f pwa-eureka-service
 
+cf a
+cf s
 
 # build all the java apps
 cd $r && find . -iname pom.xml | xargs -I pom  mvn -DskipTests clean install -f pom
 
-
 # client first
 cd $r/client
+npm install
 ng build --prod --aot
 cd dist
 touch Staticfile
 cf push pwa-client   --random-route
 
 # Eureka
-#cd $r/eureka-service
-#cf push -p target/*jar pwa-eureka-service
-#deploy_service pwa-eureka-service
+cd $r/eureka-service
+cf push -p target/*jar pwa-eureka-service  --random-route
+deploy_service pwa-eureka-service
 
 # Beer Service
-#cd $r/beer-catalog-service
-#cf push -p target/*jar pwa-beer-catalog-service --no-start
-#cf bs pwa-beer-catalog-service  pwa-eureka-service
-#cf start pwa-beer-catalog-service
+cd $r/beer-catalog-service
+cf push -p target/*jar pwa-beer-catalog-service --no-start  --random-route
+cf bs pwa-beer-catalog-service  pwa-eureka-service
+cf start pwa-beer-catalog-service
 
 
 # Edge Service
@@ -63,12 +71,9 @@ stormpathApiKeyId=`cat ~/.stormpath/apiKey.properties | grep apiKey.id | cut -f3
 stormpathApiKeySecret=`cat ~/.stormpath/apiKey.properties | grep apiKey.secret | cut -f3 -d\ `
 
 cd $r/edge-service
-cf push -p target/*jar pwa-edge-service --no-start
+cf push -p target/*jar pwa-edge-service --no-start  -n pwa-edge-service
 cf set-env pwa-edge-service STORMPATH_API_KEY_ID $stormpathApiKeyId
 cf set-env pwa-edge-service STORMPATH_API_KEY_SECRET $stormpathApiKeySecret
 cf set-env pwa-edge-service PWA_CLIENT_URI https://`app_domain pwa-client`
 cf bs pwa-edge-service pwa-eureka-service
 cf start pwa-edge-service
-
-
-
