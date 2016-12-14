@@ -52,7 +52,9 @@ npm install
 ng build --prod --aot
 cd dist
 touch Staticfile
-cf push pwa-client   --random-route
+cf push pwa-client --no-start --random-route
+cf set-env pwa-client FORCE_HTTPS true
+cf pwa-client start
 
 # Eureka
 cd $r/eureka-service
