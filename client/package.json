@@ -29,8 +29,6 @@
     "zone.js": "^0.6.23"
   },
   "devDependencies": {
-    "@angular/service-worker": "^0.7.5",
-    "gulp": "^3.9.1",
     "@angular/compiler-cli": "2.2.3",
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.42",
