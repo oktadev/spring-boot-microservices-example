@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 @Injectable()
 // http://tutorials.pluralsight.com/front-end-javascript/getting-started-with-angular-2-by-building-a-giphy-search-application
 export class GiffyService {
-  giffyApi = 'http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=';
+
+  giffyApi = '//api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=';
 
   constructor(public http: Http) {}
 
