@@ -3,7 +3,7 @@ import { BeerService } from '../shared/beer.service';
 import { GiffyService } from '../shared/giffy.service';
 
 @Component({
-  selector: 'app-beer-list',
+  selector: 'beer-list',
   templateUrl: './beer-list.component.html',
   styleUrls: ['./beer-list.component.css']
 })

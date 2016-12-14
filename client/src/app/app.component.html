@@ -1,24 +1,15 @@
-<nav class="navbar navbar-default navbar-static-top">
-  <div class="navbar-header">
-    <h3>{{title}}</h3>
-  </div>
+<md-toolbar color="primary">
+  <span>{{title}}</span>
+</md-toolbar>
 
-  <div class="container-fluid">
-    <ul class="nav navbar-nav navbar-right">
-      <li><a routerLink="/beers" routerLinkActive="active">View Beers</a></li>
-      <li (click)="logout()"><a href="#">Logout</a></li>
-    </ul>
+<div *ngIf="(user$ | async)">
+  <h3>
+    Welcome, {{ ( user$ | async ).fullName }}
+  </h3>
+  <md-progress-bar mode="indeterminate" *shellRender></md-progress-bar>
+  <div *shellNoRender>
+    <beer-list></beer-list>
   </div>
-</nav>
-
-<div *ngIf="(user$ | async)" class="row text-center">
-  <h2 class="">
-    Welcome, {{ ( user$ | async ).fullName }}.
-  </h2>
 </div>
 
 <sp-authport></sp-authport>
-
-<div class="container">
-<router-outlet></router-outlet>
-</div>
