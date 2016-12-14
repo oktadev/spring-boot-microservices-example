@@ -51,6 +51,7 @@ cd $r/client
 npm install
 ng build --prod --aot
 cd dist
+# todo: replace paths to .js files in dist/sw.js to match generated files
 touch Staticfile
 cf push pwa-client --no-start --random-route
 cf set-env pwa-client FORCE_HTTPS true
