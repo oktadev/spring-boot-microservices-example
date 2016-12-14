@@ -9,6 +9,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { BeerListComponent } from './beer-list/beer-list.component';
 import { BeerService } from './shared/beer.service';
 import { GiffyService } from './shared/giffy.service';
+import { environment } from '../environments/environment';
 
 export const appRoutes: Routes = [
   {
@@ -19,7 +20,11 @@ export const appRoutes: Routes = [
 
 export function stormpathConfig() {
   let spConfig: StormpathConfiguration = new StormpathConfiguration();
-  spConfig.endpointPrefix = 'http://localhost:8081';
+  if (environment.production) {
+    spConfig.endpointPrefix = 'http://localhost:8081';
+  } else {
+    spConfig.endpointPrefix = 'https://pwa-edge-service.cfapps.io';
+  }
   return spConfig;
 }
 
