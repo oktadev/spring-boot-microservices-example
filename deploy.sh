@@ -50,6 +50,7 @@ cd $r && find . -iname pom.xml | xargs -I pom  mvn -DskipTests clean install -f 
 cd $r/client
 #rm -rf node_modules
 npm install && ng build --prod --aot
+python $r/sw.py
 cd dist
 # todo: replace paths to .js files in dist/sw.js to match generated files
 touch Staticfile

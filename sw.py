@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 
 import os
-import re
+import re, sys
 
 if __name__ == '__main__':
 
-    dist_dir = 'client/dist'
-
     contents = ''
 
+    cwd = os.path.dirname(os.path.abspath(sys.argv[0]))
+    print(cwd)
+    dist_dir = os.path.join(cwd, 'client/dist')
+    print (dist_dir)
     sw_js = 'sw.js'
     with open(os.path.join(dist_dir, sw_js), 'r') as swjs:
         contents = swjs.read()
@@ -26,4 +28,3 @@ if __name__ == '__main__':
 
     with (open(os.path.join(dist_dir, sw_js), 'w')) as swjs:
         swjs.write(contents)
-
