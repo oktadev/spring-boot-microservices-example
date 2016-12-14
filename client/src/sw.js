@@ -47,24 +47,15 @@ self.addEventListener('fetch', (e) => {
   log('Service Worker: Fetch URL ', e.request.url);
 
   // Match requests for data and handle them separately
-  if (e.request.url.indexOf('data/') != -1) {
-    e.respondWith(
-      caches.match(e.request.clone()).then((response) => {
-        return response || fetch(e.request.clone()).then((r2) => {
-            return caches.open(dataCacheName).then((cache) => {
-              console.log('Service Worker: Fetched & Cached URL ', e.request.url);
-              cache.put(e.request.url, r2.clone());
-              return r2.clone();
-            });
+  e.respondWith(
+    caches.match(e.request.clone()).then((response) => {
+      return response || fetch(e.request.clone()).then((r2) => {
+          return caches.open(dataCacheName).then((cache) => {
+            console.log('Service Worker: Fetched & Cached URL ', e.request.url);
+            cache.put(e.request.url, r2.clone());
+            return r2.clone();
           });
-      })
-    );
-  } else {
-    // The code for App Shell
-    e.respondWith(
-      caches.match(e.request).then((response) => {
-        return response || fetch(e.request);
-      })
-    );
-  }
+        });
+    })
+  );
 });
