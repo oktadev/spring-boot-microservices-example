@@ -21,9 +21,9 @@ export const appRoutes: Routes = [
 export function stormpathConfig() {
   let spConfig: StormpathConfiguration = new StormpathConfiguration();
   if (environment.production) {
-    spConfig.endpointPrefix = 'http://localhost:8081';
-  } else {
     spConfig.endpointPrefix = 'https://pwa-edge-service.cfapps.io';
+  } else {
+    spConfig.endpointPrefix = 'http://localhost:8081';
   }
   return spConfig;
 }
