@@ -4,6 +4,7 @@ import { TestBed, async, inject } from '@angular/core/testing';
 import { BeerService } from './beer.service';
 import { BaseRequestOptions, Http, ConnectionBackend } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
+import { StormpathModule } from 'angular-stormpath';
 
 describe('BeerService', () => {
   beforeEach(() => {
@@ -18,7 +19,8 @@ describe('BeerService', () => {
         {provide: BeerService, useClass: BeerService},
         {provide: MockBackend, useClass: MockBackend},
         {provide: BaseRequestOptions, useClass: BaseRequestOptions}
-      ]
+      ],
+      imports: [StormpathModule]
     });
   });
 

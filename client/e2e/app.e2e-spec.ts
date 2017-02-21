@@ -1,6 +1,6 @@
 import { DjugPage } from './app.po';
 
-describe('djug App', function() {
+describe('djug App', () => {
   let page: DjugPage;
 
   beforeEach(() => {

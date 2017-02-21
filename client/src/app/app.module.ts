@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { Routes, RouterModule } from '@angular/router';
 import { BeerListComponent } from './beer-list/beer-list.component';
 import { BeerService } from './shared/beer.service';
-import { GiffyService } from './shared/giffy.service';
+import { GiphyService } from './shared/giphy.service';
 import { environment } from '../environments/environment';
 import { MaterialModule } from '@angular/material';
 import { AppShellModule } from '@angular/app-shell';
@@ -40,11 +40,11 @@ export function stormpathConfig() {
     FormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
-    MaterialModule.forRoot(),
+    MaterialModule,
     AppShellModule.runtime(),
     StormpathModule
   ],
-  providers: [BeerService, GiffyService,
+  providers: [BeerService, GiphyService,
     {
       provide: StormpathConfiguration, useFactory: stormpathConfig
     }],

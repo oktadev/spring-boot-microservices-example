@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BeerService } from '../shared/beer.service';
-import { GiffyService } from '../shared/giffy.service';
+import { GiphyService } from '../shared/giphy.service';
 
 @Component({
   selector: 'beer-list',
@@ -10,7 +10,7 @@ import { GiffyService } from '../shared/giffy.service';
 export class BeerListComponent implements OnInit {
   beers: Array<any>;
 
-  constructor(public beerService: BeerService, public giffyService: GiffyService) {
+  constructor(public beerService: BeerService, public giphyService: GiphyService) {
   }
 
   ngOnInit() {
@@ -18,7 +18,7 @@ export class BeerListComponent implements OnInit {
       data => {
         this.beers = data;
         for (let beer of this.beers) {
-          this.giffyService.get(beer.name).subscribe(url => beer.giffyUrl = url);
+          this.giphyService.get(beer.name).subscribe(url => beer.giphyUrl = url);
         }
       },
       error => console.log(error)
