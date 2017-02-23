@@ -27,6 +27,7 @@ export function stormpathConfig() {
   } else {
     spConfig.endpointPrefix = 'http://localhost:8081';
   }
+  spConfig.autoAuthorizedUris.push(new RegExp(spConfig.endpointPrefix + '/*'));
   return spConfig;
 }
 
