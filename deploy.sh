@@ -44,26 +44,6 @@ cf s
 # build all the java apps
 cd $r && find . -iname pom.xml | xargs -I pom  mvn -DskipTests clean install -f pom
 
-# client first
-cd $r/client
-rm -rf dist
-npm install && ng build --prod --aot
-python $r/sw.py
-cd dist
-touch Staticfile
-cf push pwa-client --no-start --random-route
-cf set-env pwa-client FORCE_HTTPS true
-cf start pwa-client
-
-# Get the URL for the client
-clientUri=https://`app_domain pwa-client`
-
-# replace the client URL in the server
-sed -i -e "s|http://localhost:4200|$clientUri|g" $r/edge-service/src/main/resources/application.properties
-# repackage the edge-service
-cd $r/edge-service
-mvn package -DskipTests
-
 # Eureka
 cd $r/eureka-service
 cf push -p target/*jar pwa-eureka-service  --random-route
@@ -76,20 +56,29 @@ cf bs pwa-beer-catalog-service  pwa-eureka-service
 cf start pwa-beer-catalog-service
 
 # Edge Service
-stormpathApiKeyId=`cat ~/.stormpath/apiKey.properties | grep apiKey.id | cut -f3 -d\ `
-stormpathApiKeySecret=`cat ~/.stormpath/apiKey.properties | grep apiKey.secret | cut -f3 -d\ `
-
 cd $r/edge-service
 cf push -p target/*jar pwa-edge-service --no-start -n pwa-edge-service
-cf set-env pwa-edge-service STORMPATH_API_KEY_ID $stormpathApiKeyId
-cf set-env pwa-edge-service STORMPATH_API_KEY_SECRET $stormpathApiKeySecret
-#cf set-env pwa-edge-service PWA_CLIENT_URI https://`app_domain pwa-client`
 cf bs pwa-edge-service pwa-eureka-service
 cf start pwa-edge-service
 
+# Get the URL for the server
+serverUri=https://`app_domain pwa-edge-service`
+
+# Client 
+cd $r/client
+rm -rf dist
+sed -i -e "s|http://localhost:8081|$serverUri|g" $r/client/src/app/shared/beer/beer.service.ts
+npm install && ng build -prod --aot
+python $r/sw.py
+cd dist
+touch Staticfile
+cf push pwa-client --no-start --random-route
+cf set-env pwa-client FORCE_HTTPS true
+cf start pwa-client
+
 # cleanup changed files
-git checkout $r/edge-service
-rm $r/edge-service/src/main/resources/application.properties-e
+git checkout $r/client
+rm $r/client/src/app/shared/beer/beer.service.ts-e
 
 # show apps and URLs
 cf apps

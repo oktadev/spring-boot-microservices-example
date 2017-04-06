@@ -10,10 +10,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,6 +47,7 @@ class CraftBeerApiAdapter {
 
 	@GetMapping("/good-beers")
 	@HystrixCommand(fallbackMethod = "goodBeersFallback")
+    @CrossOrigin(origins = "*")
 	public Collection<Map<String, String>> goodBeers() {
 
 		return this.client.read()

@@ -6,11 +6,6 @@ cd `dirname $0`
 r=`pwd`
 echo $r
 
-# client first
-cd $r/client
-npm install
-ng serve &
-
 # Eureka
 cd $r/eureka-service
 ./mvnw spring-boot:run &
@@ -22,3 +17,8 @@ cd $r/beer-catalog-service
 # Edge Service
 cd $r/edge-service
 ./mvnw spring-boot:run &
+
+# Client
+cd $r/client
+yarn
+ng serve &

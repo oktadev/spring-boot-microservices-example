@@ -6,15 +6,20 @@ import { Observable } from 'rxjs';
 // http://tutorials.pluralsight.com/front-end-javascript/getting-started-with-angular-2-by-building-a-giphy-search-application
 export class GiphyService {
 
-  giphyApi = '//api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=';
+  giphyApi = 'https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=';
 
-  constructor(public http: Http) {}
+  constructor(public http: Http) {
+  }
 
   get(searchTerm): Observable<any> {
-    let apiLink = this.giphyApi + searchTerm;
+    const apiLink = this.giphyApi + searchTerm;
     return this.http.request(apiLink).map((res: Response) => {
-      let giphies = res.json().data;
-      return giphies[0].images.original.url;
+      const results = res.json().data;
+      if (results.length > 0) {
+        return results[0].images.original.url;
+      } else {
+        return 'https://media.giphy.com/media/YaOxRsmrv9IeA/giphy.gif'; // dancing cat for 404
+      }
     });
   }
 }
