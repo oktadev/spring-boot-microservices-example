@@ -2,7 +2,7 @@
 
 **Prerequisites**: Java 8 and Node.js
 
-To run the client and all the servers, execute `./run.sh`, or execute the commands in this file individually.
+To run the client and all the servers, execute `./run.sh`, or execute the [commands in this file](https://github.com/mraible/cloud-native-pwas/blob/master/run.sh) manually.
 
 To see how to develop the Angular client, see [Progressive Web Applications with Angular, Spring Boot, and Stormpath](https://stormpath.com/blog/progressive-web-applications-angular-spring-boot-stormpath). 
 
