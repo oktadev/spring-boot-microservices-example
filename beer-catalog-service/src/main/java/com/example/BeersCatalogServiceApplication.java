@@ -69,10 +69,11 @@ class BlogCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        Stream.of("Kwak", "Budweiser", "White Rascal", "Milk Stout", "Heineken").forEach(x ->
+        Stream.of("Kronenbourg", "Budweiser", "Leffe", "Rochefort",
+                "Heineken", "Duvel", "Brooklyn Lager", "Karmeliet").forEach(x ->
             repository.save(new Beer(x))
         );
-        System.out.println(repository.findAll());
+        repository.findAll().forEach(System.out::println);
     }
 
     private final BeerRepository repository;
