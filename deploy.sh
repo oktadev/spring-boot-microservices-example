@@ -32,11 +32,11 @@ r=`pwd`
 echo $r
 
 ## Reset
-cf d -f beer-catalog-service
-cf d -f client
-cf d -f eureka-service
-cf d -f edge-service
-cf ds -f eureka-service
+cf d -f pwa-beer-catalog-service
+cf d -f pwa-client
+cf d -f pwa-eureka-service
+cf d -f pwa-edge-service
+cf ds -f pwa-eureka-service
 
 cf a
 cf s
@@ -46,23 +46,23 @@ cd $r && find . -iname pom.xml | xargs -I pom  mvn -DskipTests clean install -f 
 
 # Eureka
 cd $r/eureka-service
-cf push -p target/*jar eureka-service  --random-route
-deploy_service eureka-service
+cf push -p target/*jar pwa-eureka-service  --random-route
+deploy_service pwa-eureka-service
 
 # Beer Service
 cd $r/beer-catalog-service
-cf push -p target/*jar beer-catalog-service --no-start  --random-route
-cf bs beer-catalog-service eureka-service
-cf start beer-catalog-service
+cf push -p target/*jar pwa-beer-catalog-service --no-start  --random-route
+cf bs pwa-beer-catalog-service  pwa-eureka-service
+cf start pwa-beer-catalog-service
 
 # Edge Service
 cd $r/edge-service
-cf push -p target/*jar edge-service --no-start -n edge-service
-cf bs edge-service eureka-service
-cf start edge-service
+cf push -p target/*jar pwa-edge-service --no-start -n pwa-edge-service
+cf bs pwa-edge-service pwa-eureka-service
+cf start pwa-edge-service
 
 # Get the URL for the server
-serverUri=https://`app_domain edge-service`
+serverUri=https://`app_domain pwa-edge-service`
 
 # Client 
 cd $r/client

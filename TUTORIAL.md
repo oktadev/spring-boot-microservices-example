@@ -502,7 +502,11 @@ eureka.client.registryFetchIntervalSeconds = 5
 eureka.client.serviceUrl.defaultZone=${vcap.services.eureka-service.credentials.uri}/eureka/
 ```
 
-There were quite a few steps involved to deploy this application and update files for production. For that reason, 
+To deploy it on Cloud Foundry with [Pivotal Web Services](http://run.pivotal.io/), you'll need to create an account,  
+download/install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli#downloads), and sign-in 
+(using `cf login -a api.run.pivotal.io`).
+ 
+There are quite a few steps involved to deploy all the services and the Angular client for production. For that reason, 
 I wrote a [`deploy.sh`](https://github.com/oktadeveloper/spring-boot-microservices-example/blob/master/deploy.sh) script 
 that automates everything and uses random domain names for the backend services. Note that it uses a 
 [`sw.py`](https://github.com/oktadeveloper/spring-boot-microservices-example/blob/master/sw.py) Python script to change 
