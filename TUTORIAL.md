@@ -36,7 +36,7 @@ they have access to. This is an example of [Conway's Law](http://www.melconway.c
 ![Conway's Law](static/conways-law.png)
 
 > Any organization that designs a system (defined broadly) will produce a design whose structure is a copy of the organization's communication structure.
-> -- Melvyn Conway, 1967
+> — Melvyn Conway, 1967
 
 ### Microservices Architecture Philosophy
 The philosophy of a microservices architecture essentially equals to the Unix philosophy of "Do one thing and do it well". 
@@ -71,7 +71,7 @@ you're just shifting complexity from inside a component to the connections betwe
 capabilities is something to consider. A poor team will always create a poor system.
 
 > You shouldn't start with a microservices architecture. Instead begin with a monolith, keep it modular, and split it into microservices once the monolith becomes a problem.
-> -- Martin Fowler
+> — Martin Fowler
 
 ## Build a Microservices Architecture with Spring Boot, Spring Cloud, and Netflix Eureka
 
