@@ -486,7 +486,7 @@ eureka.instance.leaseRenewalIntervalInSeconds = 5
 
 eureka.client.region = default
 eureka.client.registryFetchIntervalSeconds = 5
-eureka.client.serviceUrl.defaultZone=${vcap.services.eureka-service.credentials.uri}/eureka/
+eureka.client.serviceUrl.defaultZone=${vcap.services.pwa-eureka-service.credentials.uri}/eureka/
 ```
 
 Create `beer-catalog-service/src/main/resources/application-cloud.properties` and populate it with similar properties.
@@ -499,8 +499,10 @@ eureka.instance.leaseRenewalIntervalInSeconds = 5
 
 eureka.client.region = default
 eureka.client.registryFetchIntervalSeconds = 5
-eureka.client.serviceUrl.defaultZone=${vcap.services.eureka-service.credentials.uri}/eureka/
+eureka.client.serviceUrl.defaultZone=${vcap.services.pwa-eureka-service.credentials.uri}/eureka/
 ```
+
+In the properties above, `pwa-eureka-service` is the name you'll give to the Eureka service when you deploy it to Cloud Foundry.
 
 To deploy it on Cloud Foundry with [Pivotal Web Services](http://run.pivotal.io/), you'll need to create an account,  
 download/install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli#downloads), and sign-in 
