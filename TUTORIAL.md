@@ -512,15 +512,44 @@ download/install the [Cloud Foundry CLI](https://github.com/cloudfoundry/cli#dow
  
 There are quite a few steps involved to deploy all the services and the Angular client for production. For that reason, 
 I wrote a [`deploy.sh`](https://github.com/oktadeveloper/spring-boot-microservices-example/blob/master/deploy.sh) script 
-that automates everything and uses random domain names for the backend services. Note that it uses a 
+that automates everything. Note that it uses a 
 [`sw.py`](https://github.com/oktadeveloper/spring-boot-microservices-example/blob/master/sw.py) Python script to change 
 the names of Angular's generated JavaScript files. 
 
+## When to use Microservices
+
+Building a microservices architecture is something you should consider when you're have difficulty scaling development 
+in a large team. From a development standpoint, moving to microservices will not reduce complexity, but will likely 
+increase it you move to a distributed system. Automation and orchestration are key for deployment. You should make sure 
+to define your exit criteria  (e.g. maximum time for a request to execute) before implementing your microservices 
+infrastructure. You’re likely going to have to custom build some things, so be prepared for that. Trial a few 
+different platforms and then pick the one that  meets your criteria and is the easiest to develop with. Don’t develop 
+half of your system on one platform  and then try moving to another. Another tip is to make sure and record the request 
+id in all logging events for traceability.
+
+If you have less than 20 developers, start with a monolith, but build in async messaging as soon as possible. Use it for 
+things like mail, notifications, logging, and archiving. Debugging, deployment, logging is much easier with a monolith.
+
+Also, consider using async messaging or other non-blocking communication methods with automatic back pressure. HTTP is 
+a syncronous protocol and can be a limiting factor in high-traffic systems.
+
 ## Learn More about Microservice Architectures
 
-// TODO
+Spring Boot isn't the only framework to implement embedded servlet containers or make it easy to develop microservices. 
+In Javaland, there's [Dropwizard](http://www.dropwizard.io/), [MicroProfile](https://microprofile.io/) for Java EE, 
+[Lagom](https://www.lightbend.com/platform/development/lagom-framework), [Vert.x](http://vertx.io/), and 
+[Tribestream](http://www.tomitribe.com/products/).
 
-// mention JHipster, Dropwizard, Tomitribe and MicroProfile
+You can find the source code for this article's applications on GitHub at <https://github.com/oktadeveloper/spring-boot-microservices-example>.
 
+You can also watch a video of [Josh Long](https://twitter.com/starbuxman) developing these applications in a YouTube
+recording of our Cloud Native PWAs presentation at Devoxx France 2017.
 
+<div style="text-align: center">
+    <iframe width="560" height="315" style="max-width: 100%" src="https://www.youtube.com/embed/0MBsfdQiS64" 
+        frameborder="0" allowfullscreen></iframe>
+</div>
 
+If you have any questions about this article, please email me at matt.raible@okta.com, post a question to Stack Overflow
+[with the okta tag](http://stackoverflow.com/questions/tagged/okta), or 
+[create an issue on GitHub](https://github.com/oktadeveloper/spring-boot-microservices-example/issues/new).
