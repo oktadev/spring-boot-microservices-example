@@ -21,9 +21,9 @@ import java.util.stream.Stream;
 @SpringBootApplication
 public class BeerCatalogServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BeerCatalogServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BeerCatalogServiceApplication.class, args);
+    }
 }
 
 @Data
@@ -33,15 +33,15 @@ public class BeerCatalogServiceApplication {
 @Entity
 class Beer {
 
-	public Beer(String name) {
-		this.name = name;
-	}
+    public Beer(String name) {
+        this.name = name;
+    }
 
-	@Id
-	@GeneratedValue
-	private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	private String name;
+    private String name;
 }
 
 @RepositoryRestResource
@@ -50,18 +50,18 @@ interface BeerRepository extends JpaRepository<Beer, Long> {}
 @Component
 class BeerInitializer implements CommandLineRunner {
 
-	private final BeerRepository beerRepository;
+    private final BeerRepository beerRepository;
 
-	BeerInitializer(BeerRepository beerRepository) {
-		this.beerRepository = beerRepository;
-	}
+    BeerInitializer(BeerRepository beerRepository) {
+        this.beerRepository = beerRepository;
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
-		Stream.of("Kentucky Brunch Brand Stout", "Good Morning", "Very Hazy", "King Julius",
-				"Budweiser", "Coors Light", "PBR")
-				.forEach(beer -> beerRepository.save(new Beer(beer)));
+    @Override
+    public void run(String... args) throws Exception {
+        Stream.of("Kentucky Brunch Brand Stout", "Good Morning", "Very Hazy", "King Julius",
+                "Budweiser", "Coors Light", "PBR")
+                .forEach(beer -> beerRepository.save(new Beer(beer)));
 
-		beerRepository.findAll().forEach(System.out::println);
-	}
+        beerRepository.findAll().forEach(System.out::println);
+    }
 }

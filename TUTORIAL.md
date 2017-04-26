@@ -167,15 +167,15 @@ You can add this code to `BeerCatalogServiceApplication.java`, or create separat
 @Entity
 class Beer {
 
-	public Beer(String name) {
-		this.name = name;
-	}
+    public Beer(String name) {
+        this.name = name;
+    }
 
-	@Id
-	@GeneratedValue
-	private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	private String name;
+    private String name;
 }
 
 @RepositoryRestResource
@@ -184,20 +184,20 @@ interface BeerRepository extends JpaRepository<Beer, Long> {}
 @Component
 class BeerInitializer implements CommandLineRunner {
 
-	private final BeerRepository beerRepository;
+    private final BeerRepository beerRepository;
 
-	BeerInitializer(BeerRepository beerRepository) {
-		this.beerRepository = beerRepository;
-	}
+    BeerInitializer(BeerRepository beerRepository) {
+        this.beerRepository = beerRepository;
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
-		Stream.of("Kentucky Brunch Brand Stout", "Good Morning", "Very Hazy", "King Julius",
-				"Budweiser", "Coors Light", "PBR")
-				.forEach(beer -> beerRepository.save(new Beer(beer)));
+    @Override
+    public void run(String... args) throws Exception {
+        Stream.of("Kentucky Brunch Brand Stout", "Good Morning", "Very Hazy", "King Julius",
+                "Budweiser", "Coors Light", "PBR")
+                .forEach(beer -> beerRepository.save(new Beer(beer)));
 
-		beerRepository.findAll().forEach(System.out::println);
-	}
+        beerRepository.findAll().forEach(System.out::println);
+    }
 }
 ```
 
@@ -299,9 +299,9 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 @SpringBootApplication
 public class EdgeServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(EdgeServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(EdgeServiceApplication.class, args);
+    }
 }
 ```
 
