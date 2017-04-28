@@ -10,7 +10,6 @@ import { GiphyService } from './shared/giphy/giphy.service';
 import { MaterialModule } from '@angular/material';
 import { AppShellModule } from '@angular/app-shell';
 import { StormpathConfiguration, StormpathModule } from 'angular-stormpath';
-import { BeerListComponent } from './beer-list/beer-list.component';
 
 export function stormpathConfig(): StormpathConfiguration {
   let spConfig: StormpathConfiguration = new StormpathConfiguration();

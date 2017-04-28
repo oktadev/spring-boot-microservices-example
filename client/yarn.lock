@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@angular/app-shell@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@angular/app-shell/-/app-shell-0.1.0.tgz#070f0944db3c79910c644b923643cee5836779f7"
+
 "@angular/cli@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-1.0.0.tgz#7bfde1e7c5f28bf5bed4dda1352ee67ee887302f"
@@ -93,6 +97,10 @@
 "@angular/http@^4.0.0":
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/@angular/http/-/http-4.0.3.tgz#efbb701a215ec7704c021676484b85ed47392f4b"
+
+"@angular/material@2.0.0-beta.2":
+  version "2.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-2.0.0-beta.2.tgz#65ee8733990347b7518b7f42113e02e069dc109b"
 
 "@angular/platform-browser-dynamic@^4.0.0":
   version "4.0.3"
