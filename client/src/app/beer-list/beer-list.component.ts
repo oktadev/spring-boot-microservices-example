@@ -3,7 +3,7 @@ import { BeerService, GiphyService } from '../shared';
 import { Stormpath } from 'angular-stormpath';
 
 @Component({
-  selector: 'beer-list',
+  selector: 'app-beer-list',
   templateUrl: './beer-list.component.html',
   styleUrls: ['./beer-list.component.css'],
   providers: [BeerService, GiphyService]

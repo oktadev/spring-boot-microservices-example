@@ -1,5 +1,6 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { MaterialModule } from '@angular/material';
 import { StormpathModule } from 'angular-stormpath';
 import { BeerListComponent } from './beer-list/beer-list.component';
 
@@ -9,7 +10,7 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent, BeerListComponent
       ],
-      imports: [StormpathModule]
+      imports: [MaterialModule, StormpathModule]
     }).compileComponents();
   }));
 

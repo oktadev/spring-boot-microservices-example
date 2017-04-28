@@ -5,3 +5,7 @@ body {
   margin: 0;
   font-family: Roboto, sans-serif;
 }
+
+sp-authport > .container {
+  margin-top: 25px;
+}
