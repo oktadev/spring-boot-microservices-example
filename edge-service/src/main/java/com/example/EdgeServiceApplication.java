@@ -1,7 +1,12 @@
 package com.example;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.stormpath.sdk.servlet.account.AccountStringResolver;
+import com.stormpath.sdk.servlet.http.Resolver;
+import feign.RequestInterceptor;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
@@ -9,6 +14,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.context.annotation.Bean;
 import org.springframework.hateoas.Resources;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +31,12 @@ public class EdgeServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(EdgeServiceApplication.class, args);
+    }
+
+    @Bean
+    public RequestInterceptor forwardedAccountRequestInterceptor(
+            @Qualifier("stormpathForwardedAccountHeaderValueResolver") Resolver<String> accountStringResolver) {
+        return new ForwardedAccountRequestInterceptor(accountStringResolver);
     }
 }
 
@@ -53,7 +65,9 @@ class GoodBeerApiAdapterRestController {
         return new ArrayList<>();
     }
 
-    @HystrixCommand(fallbackMethod = "fallback")
+    @HystrixCommand(fallbackMethod = "fallback", commandProperties = {
+            @HystrixProperty(name="execution.isolation.strategy", value="SEMAPHORE")
+    })
     @GetMapping("/good-beers")
     @CrossOrigin(origins = "*")
     public Collection<Beer> goodBeers() {
