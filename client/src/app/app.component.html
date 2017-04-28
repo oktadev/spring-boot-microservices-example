@@ -2,7 +2,17 @@
   <span>{{title}}</span>
 </md-toolbar>
 
+<sp-authport></sp-authport>
+
+<div *ngIf="(user$ | async)" class="row text-center">
+  <h2>
+    Welcome, {{ ( user$ | async ).givenName }}!
+  </h2>
+  <ul class="nav nav-pills nav-stacked text-centered">
+    <li role="presentation" (click)="logout(); false"><a href="#">Logout</a></li>
+  </ul>
+</div>
 <md-progress-bar mode="indeterminate" *shellRender></md-progress-bar>
-<div *shellNoRender>
+<div [hidden]="!(user$ | async)" *shellNoRender>
   <app-beer-list></app-beer-list>
 </div>

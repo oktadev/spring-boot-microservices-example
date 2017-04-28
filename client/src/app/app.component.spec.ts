@@ -1,13 +1,15 @@
 import { TestBed, async } from '@angular/core/testing';
-
 import { AppComponent } from './app.component';
+import { StormpathModule } from 'angular-stormpath';
+import { BeerListComponent } from './beer-list/beer-list.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent, BeerListComponent
       ],
+      imports: [StormpathModule]
     }).compileComponents();
   }));
 
