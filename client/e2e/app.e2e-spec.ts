@@ -1,10 +1,10 @@
-import { DjugPage } from './app.po';
+import { ClientPage } from './app.po';
 
-describe('djug App', () => {
-  let page: DjugPage;
+describe('client App', () => {
+  let page: ClientPage;
 
   beforeEach(() => {
-    page = new DjugPage();
+    page = new ClientPage();
   });
 
   it('should display message saying app works', () => {

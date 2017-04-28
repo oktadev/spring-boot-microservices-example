@@ -1,7 +1,5 @@
-# Cloud Native Progressive Web Apps with Spring Boot and Angular
+# Bootiful Microservices with Spring Boot
 
-**Prerequisites**: Java 8, Node.js, a [Stormpath Account](https://api.stormpath.com/register), and an `apiKey.properties` file in `~/stormpath/`.
+**Prerequisites**: Java 8 and Node.js
 
-To run the client and all the servers, execute `./run.sh`, or execute the commands in this file individually.
-
-To see how to develop the Angular client, see [Progressive Web Applications with Angular, Spring Boot, and Stormpath](https://stormpath.com/blog/progressive-web-applications-angular-spring-boot-stormpath).
+To run the client and all the servers, execute `./run.sh`, or execute the [commands in this file](https://github.com/oktadeveloper/spring-boot-microservices-example/blob/master/run.sh) manually.
