@@ -3,7 +3,7 @@
 If you've built your microservices architecture with Spring Boot and Spring Cloud, you can easily lock it down using
 Okta, Stormpath SDK's, JWTs, and [Juiser](https://github.com/juiser/juiser).
 
-This tutorial assumes you've built a microservices and Angular app using [Building a Microservices Architecture for Microbrews](./TUTORIAL.md).
+This tutorial assumes you've built a microservices architecture and an Angular app using [Building a Microservices Architecture for Microbrews](./TUTORIAL.md).
 At the very least, you'll need to clone the aforementioned article's completed project.
 
 ```bash
