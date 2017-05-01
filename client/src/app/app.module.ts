@@ -33,7 +33,7 @@ export function stormpathConfig(): StormpathConfiguration {
   ],
   providers: [
     BeerService, GiphyService,
-	{ provide: StormpathConfiguration, useFactory: stormpathConfig },
+    { provide: StormpathConfiguration, useFactory: stormpathConfig },
   ],
   bootstrap: [AppComponent]
 })

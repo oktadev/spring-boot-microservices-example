@@ -5,8 +5,7 @@ import { Stormpath } from 'angular-stormpath';
 @Component({
   selector: 'app-beer-list',
   templateUrl: './beer-list.component.html',
-  styleUrls: ['./beer-list.component.css'],
-  providers: [BeerService, GiphyService]
+  styleUrls: ['./beer-list.component.css']
 })
 export class BeerListComponent implements OnInit {
   beers: Array<any>;

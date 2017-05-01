@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, Response } from '@angular/http';
+import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { StormpathConfiguration } from 'angular-stormpath';
 import { Observable } from 'rxjs';
@@ -11,9 +11,7 @@ export class BeerService {
   }
 
   getAll(): Observable<any> {
-    let options = new RequestOptions({ withCredentials: true });
-
-    return this.http.get(this.config.endpointPrefix + '/good-beers', options)
+    return this.http.get(this.config.endpointPrefix + '/good-beers')
       .map((response: Response) => response.json());
   }
 }
