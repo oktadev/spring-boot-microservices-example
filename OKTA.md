@@ -558,5 +558,13 @@ After making this change, authentication should work as expected.
 
 ## Learn More
 
+The source code for this tutorial is [available on GitHub](https://github.com/oktadeveloper/spring-boot-microservices-example/), 
+in the ["okta" branch](https://github.com/oktadeveloper/spring-boot-microservices-example/tree/okta).
+
+```bash
+git clone https://github.com/oktadeveloper/spring-boot-microservices-example.git
+git checkout okta
+```
+
 Learn more about Okta and its Authentication API at [developer.okta.com](http://developer.okta.com). Don't forget to check
 out the [Okta Developer Blog](http://developer.okta.com/blog/) too!
