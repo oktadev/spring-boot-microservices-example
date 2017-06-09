@@ -9,17 +9,17 @@ echo $r
 # Eureka
 cd $r/eureka-service
 echo "Starting Eureka Service..."
-mvn -q spring-boot:run &
+mvn -q clean spring-boot:run &
 
 # Beer Service
 echo "Starting Beer Catalog Service..."
 cd $r/beer-catalog-service
-mvn -q spring-boot:run &
+mvn -q clean spring-boot:run &
 
 # Edge Service
 echo "Starting Edge Service..."
 cd $r/edge-service
-mvn -q spring-boot:run &
+mvn -q clean spring-boot:run &
 
 # Client
 cd $r/client
