@@ -1,16 +1,32 @@
-# Securing a Microservices Architecture with Okta
+You've built a microservices architecture with Spring Boot and Spring Cloud. You're happy with the results, and you like 
+how it adds resiliency to your application. You're also pleased with how it scales and how different teams can deploy 
+microservices independently. But what about security? 
 
-If you've built your microservices architecture with Spring Boot and Spring Cloud, you can easily lock it down using
-Okta, Stormpath SDK's, JWTs, and [Juiser](https://github.com/juiser/juiser).
+Are you using Spring Security to lock everything down? Are your microservices locked down too, or are they just behind 
+the firewall? 
 
-This tutorial assumes you've built a microservices architecture and an Angular app using [Building a Microservices Architecture for Microbrews](./TUTORIAL.md).
-At the very least, you'll need to clone the aforementioned article's completed project.
+This tutorial shows you how you can use Spring Security, Okta, and a few Java libraries to secure your microservices 
+architecture. Not only that, but I'll show you how to secure *everything*, so even your backend services communicate
+securely. You'll learn how to use JWTs and [Juiser](https://github.com/juiser/juiser) to read an `X-Forwarded-User`
+header and turn it into a Spring Security `User`.
+
+This tutorial builds off [Build a Microservices Architecture for Microbrews with Spring Boot](/blog/2017/06/15/build-microservices-architecture-spring-boot). 
+A simple microservices architecture with Spring Boot and Spring Cloud looks as follows.
+
+![Spring Boot + Cloud Microservices Architecture](static/spring-microservices-diagram.png)
+
+Once you've completed this tutorial, you'll have Spring Security locking things down, and Okta providing authentication 
+and JWT validation.
+
+![Secure Spring Microservices](static/spring-secure-microservices-diagram.png)
+
+To begin, you'll need to clone the aforementioned article's completed project.
 
 ```bash
 git clone https://github.com/oktadeveloper/spring-boot-microservices-example.git
 ```
 
-To begin, you'll need to [create an Okta Developer account](https://github.com/stormpath/stormpath-sdk-java/blob/okta/OktaGettingStarted.md).
+[Create an Okta Developer account](https://github.com/stormpath/stormpath-sdk-java/blob/okta/OktaGettingStarted.md).
 After completing these steps, you should have the information you need to set the following environment variables.
 
 ```bash
@@ -21,14 +37,15 @@ export OKTA_API_TOKEN=[api-token]
 
 ## Add Stormpath's Zuul Support to the Edge Service
 
-The **edge-service** application handles the routing to the backend beer-catalog-service, so its the best place to start securing things.
-Add the Stormpath BOM (Bill Of Materials) in the `dependencyManagement` section of `edge-service/pom.xml`.
+The **edge-service** application handles the routing to the backend `beer-catalog-service`, so it's the best place to 
+start securing things. Add the Stormpath BOM (Bill Of Materials) in the `dependencyManagement` section of 
+`edge-service/pom.xml`.
 
 ```xml
 <dependency>
     <groupId>com.stormpath.sdk</groupId>
     <artifactId>stormpath-bom</artifactId>
-    <version>2.0.0-okta-rc1</version>
+    <version>2.0.0-okta-rc3</version>
     <type>pom</type>
     <scope>import</scope>
 </dependency>
@@ -75,16 +92,17 @@ Generate the private key's corresponding `rsatest.pub.pem` public key with:
 openssl rsa -in rsatest.priv.pem -pubout > rsatest.pub.pem
 ```
 
-After copying (or generating), both `rsatest.priv.pem` and `rsatest.pub.pem` files should be in `edge-service/src/main/resources`.
+After copying (or generating), both `rsatest.priv.pem` and `rsatest.pub.pem` files should be in 
+`edge-service/src/main/resources`.
 
 ## Add Juiser to the Beer Catalog Service
 
-[Juiser](https://github.com/juiser/juiser) is a small Java library that automates token authentication during an HTTP request. In this example, Juiser
- reads the `X-Forwarded-User` header and creates a Spring Security `User` object for you.
+[Juiser](https://github.com/juiser/juiser) is a small Java library that automates token authentication during an HTTP 
+request. In this example, Juiser reads the `X-Forwarded-User` header and creates a Spring Security `User` for you.
 
-In order for Juiser to read the JWT sent by Stormpath's Zuul support, you'll need to copy the public key (`rsatest.pub.pem`) from 
-`edge-service/src/main/resources` to `beer-catalog-service/src/main/resources`. Then add the following dependencies to the 
-Beer Catalog Service's `pom.xml`.
+For Juiser to read the JWT sent by Stormpath's Zuul support, you need to copy the public key (`rsatest.pub.pem`) from 
+`edge-service/src/main/resources` to `beer-catalog-service/src/main/resources`. Then add the following dependencies to 
+the Beer Catalog Service's `pom.xml`.
 
 ```xml
 <properties>
@@ -128,8 +146,8 @@ Beer Catalog Service's `pom.xml`.
 </dependencies>
 ```
 
-Create a `HomeController` in `src/main/java/com/example/HomeController.java` to render the user's information
-so you can verify authentication is working.
+Create a `HomeController` in `src/main/java/com/example/HomeController.java` to render the user's information so you can 
+verify authentication is working.
 
 ```java
 package com.example;
@@ -157,7 +175,8 @@ public class HomeController {
 }
 ```
 
-**NOTE:** There is an issue with Juiser 1.0.0 that it won't initialize properly if you don't have at least one `@Controller` in your project.
+**NOTE:** There is an issue with Juiser 1.0.0 that it won't initialize  if you don't have at least one `@Controller` in 
+your project.
 
 Create a `home.html` template in `src/main/resources/templates/home.html` and populate it with the following code.
 
@@ -294,13 +313,14 @@ Create a `home.html` template in `src/main/resources/templates/home.html` and po
 ```
 
 Add the following properties to `src/main/resources/application.properties` to configure Juiser.
-```
+
+```properties
 server.use-forward-headers=true
 juiser.header.jwt.key.resource=classpath:rsatest.pub.pem
 ```
 
-Create a `SecurityConfig.java` class in the same package as `HomeController`. This class configures 
-Spring Security so it secures all endpoints.
+Create a `SecurityConfig.java` class in the same package as `HomeController`. This class configures Spring Security so 
+it secures all endpoints.
 
 ```java
 package com.example;
@@ -389,7 +409,7 @@ and navigating to `http://localhost:8081/home`. You should see a login page, pro
 
 ![Stormpath Zuul Login](static/zuul-login.png)
 
-After logging in, you should see a page display your user's information.
+After logging in, you should see a page displaying your user's information.
 
 ![Stormpath Zuul Home](static/zuul-home.png)
 
@@ -403,8 +423,9 @@ Install Stormpath's Angular SDK to make it possible to communicate with the secu
 npm install --save angular-stormpath
 ```
 
-Modify `app.module.ts` to import `StormpathConfiguration` and `StormpathModule`. Then create a function to configure 
-the endpointPrefix to point to `http://localhost:8081`. This function also configures the Angular SDK so it passes
+**NOTE**: You can also use angular-oauth2-oidc and the Okta Auth SDK as described in [Add Authentication to Your Angular PWA](/blog/2017/06/13/add-authentication-angular-pwa).
+
+Modify `app.module.ts` to import `StormpathConfiguration` and `StormpathModule`. Then create a function to configure the endpointPrefix to point to `http://localhost:8081`. This function also configures the Angular SDK, so it passes
 an `Authorization` header to any endpoint that matches `http://localhost:8081/*`. 
 
 ```typescript
@@ -418,8 +439,8 @@ export function stormpathConfig(): StormpathConfiguration {
 }
 ```
 
-In this same file, add `StormpathModule` to the imports in `@NgModule` and use the `stormpathConfig` function to override the default `
-StormpathConfiguration` in the providers list.
+In this same file, add `StormpathModule` to the imports in `@NgModule` and use the `stormpathConfig` function to override 
+the default `StormpathConfiguration` in the `providers` list.
 
 ```typescript
 @NgModule({
@@ -436,8 +457,8 @@ StormpathConfiguration` in the providers list.
 })
 ```
 
-You can also modify `beer.service.ts` to read the `endpointPrefix` from `StormpathConfiguration`. This will allow you to change
-your APIs location in a single file (`app.module.ts`), which is useful when deploying to production.
+You can also modify `beer.service.ts` to read the `endpointPrefix` from `StormpathConfiguration`. This will allow you to 
+change your APIs location in a single file (`app.module.ts`), which is useful when deploying to production.
 
 ```typescript
 import { StormpathConfiguration } from 'angular-stormpath';
@@ -455,7 +476,8 @@ export class BeerService {
 }
 ```
 
-Modify `app.component.html` to add the Stormpath `<sp-authport></sp-authport>` component and a section to show the user’s name and a logout link.
+Modify `app.component.html` to add the Stormpath `<sp-authport></sp-authport>` component and a section to show the user’s 
+name and a logout link.
 
 ```html
 <md-toolbar color="primary">
@@ -478,7 +500,8 @@ Modify `app.component.html` to add the Stormpath `<sp-authport></sp-authport>` c
 </div>
 ```
 
-You’ll notice the `user$` variable in the HTML. In order to resolve this, you need to change your `AppComponent` so it extends `AuthPortComponent`.
+You’ll notice the `user$` variable in the HTML. To resolve this, you need to change your `AppComponent`, so it extends 
+`AuthPortComponent`.
 
 ```typescript
 import { AuthPortComponent } from 'angular-stormpath';
@@ -486,7 +509,8 @@ import { AuthPortComponent } from 'angular-stormpath';
 export class AppComponent extends AuthPortComponent {
 ```
 
-Stormpath's Angular SDK uses Bootstrap classes in its HTML templates. To make the login component look good, install Bootstrap.
+Stormpath's Angular SDK uses Bootstrap classes in its HTML templates. To make the login component look good, install 
+Bootstrap.
 
 ```bash
 npm install --save bootstrap@3.3.7
@@ -503,14 +527,14 @@ Then modify `.angular-cli.json` to add it to the styles array:
 
 ### Verify Authentication Works
 
-Navigate to <http://localhost:4200> and you should see a login form like the following. 
+Navigate to <http://localhost:4200>, and you should see a login form like the following. 
 
 ![Angular Login](static/angular-login.png)
 
-**NOTE:** If it logs you in automatically, this is probably because you have cookies for `http://localhost:8080` still 
-in your browser. Clear your cookies, or try an incognito window.
+**NOTE:** If it logs you in automatically, this is likely because you have cookies for `http://localhost:8080` still in 
+your browser. Clear your cookies, or try an incognito window.
 
-If you want to adjust the style of the form so it isn't right up against the top toolbar, add the following to `styles.css`.
+If you want to adjust the style of the form, so it isn't right up against the top toolbar, add the following to `styles.css`.
 
 ```css
 sp-authport > .container {
@@ -520,12 +544,12 @@ sp-authport > .container {
 
 ![Angular Login Styled](static/angular-login-top-margin.png)
 
-You should be able to login, see a welcome message, as well as a logout link. If the beer list doesn't load, it's likely
+You should be able to log in, see a welcome message, as well as a logout link. If the beer list doesn't load, it's likely
 because it was already loaded when the app first loaded, and you need to load its data again after logging in.
 
 ### Listen for Login in BeerListComponent
 
-Modify `beer-list.component.ts` so it uses the `Stormpath` service to listen for an authenticated user.
+Modify `beer-list.component.ts`, so it uses the `Stormpath` service to listen for an authenticated user.
 
 ```typescript
 import { Stormpath } from 'angular-stormpath';
