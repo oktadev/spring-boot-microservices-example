@@ -1,5 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+/* tslint:disable:no-unused-variable */
 
+import { TestBed, inject } from '@angular/core/testing';
 import { BeerService } from './beer.service';
 import { BaseRequestOptions, Http, ConnectionBackend } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';

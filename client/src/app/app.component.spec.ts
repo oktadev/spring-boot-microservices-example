@@ -37,7 +37,7 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('app works!');
   }));
 
-  it('should render title in a h1 tag', async(() => {
+  it('should render title in an md-toolbar tag', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
