@@ -406,8 +406,28 @@ While you're modifying `EdgeServiceApplication`, change the `HystrixCommand` in 
 
 ### Verify Secure Communication
 
-Verify communication between the `edge-service` and `beer-catalog-service` works by starting both applications
-and navigating to `http://localhost:8081/home`. You should see a login page, prompting for your credentials.
+Verify communication between the `edge-service` and `beer-catalog-service` works by starting all the Spring Boot applications. First, start `eureka-service`:
+
+```bash
+cd eureka-service
+./mvnw spring-boot:run
+```
+
+In a new terminal window, start `beer-catalog-service`:
+
+```bash
+cd beer-catalog-service
+./mvnw spring-boot:run
+```
+
+In another terminal window, start `edge-service`:
+
+```bash
+cd edge-service
+./mvnw spring-boot:run
+```
+
+Open your browser and navigate to <http://localhost:8081/home>. You should see a login page, prompting for your credentials.
 
 ![Stormpath Zuul Login](static/zuul-login.png)
 
@@ -419,15 +439,18 @@ Click the **Logout** button to delete the cookies in your browser and end your s
 
 ## Add Stormpath's Angular Support to the Client
 
+Now that your API is secured, you'll need to modify the Angular client so it authenticates before fetching data.
+
 Install Stormpath's Angular SDK to make it possible to communicate with the secured server.
 
 ```bash
+cd client
 npm install --save angular-stormpath
 ```
 
-**NOTE**: You can also use angular-oauth2-oidc and the Okta Auth SDK as described in [Add Authentication to Your Angular PWA](/blog/2017/06/13/add-authentication-angular-pwa).
+**NOTE**: As an alternative to Stormpath's Angular SDK, you can use angular-oauth2-oidc and the Okta Auth SDK as described in [Add Authentication to Your Angular PWA](/blog/2017/06/13/add-authentication-angular-pwa).
 
-Modify `app.module.ts` to import `StormpathConfiguration` and `StormpathModule`. Then create a function to configure the endpointPrefix to point to `http://localhost:8081`. This function also configures the Angular SDK, so it passes
+Modify `client/src/app/app.module.ts` to import `StormpathConfiguration` and `StormpathModule`. Then create a function to configure the endpointPrefix to point to `http://localhost:8081`. This function also configures the Angular SDK, so it passes
 an `Authorization` header to any endpoint that matches `http://localhost:8081/*`. 
 
 ```typescript
@@ -453,14 +476,14 @@ the default `StormpathConfiguration` in the `providers` list.
   ],
   providers: [
     BeerService, GiphyService,
-    { provide: StormpathConfiguration, useFactory: stormpathConfig },
+    { provide: StormpathConfiguration, useFactory: stormpathConfig }
   ],
   bootstrap: [AppComponent]
 })
 ```
 
-You can also modify `beer.service.ts` to read the `endpointPrefix` from `StormpathConfiguration`. This will allow you to 
-change your APIs location in a single file (`app.module.ts`), which is useful when deploying to production.
+You can also modify `client/src/app/shared/beer/beer.service.ts` to read the `endpointPrefix` from `StormpathConfiguration`. This will
+allow you to change your APIs location in a single file (`app.module.ts`), which is useful when deploying to production.
 
 ```typescript
 import { StormpathConfiguration } from 'angular-stormpath';
@@ -478,7 +501,7 @@ export class BeerService {
 }
 ```
 
-Modify `app.component.html` to add the Stormpath `<sp-authport></sp-authport>` component and a section to show the user’s 
+Modify `client/src/app/app.component.html` to add the Stormpath `<sp-authport></sp-authport>` component and a section to show the user’s 
 name and a logout link.
 
 ```html
@@ -502,8 +525,8 @@ name and a logout link.
 </div>
 ```
 
-You’ll notice the `user$` variable in the HTML. To resolve this, you need to change your `AppComponent`, so it extends 
-`AuthPortComponent`.
+You’ll notice the `user$` variable in the HTML. To resolve this, you need to change your `AppComponent` (in 
+`client/src/app/app.component.ts`), so it extends `AuthPortComponent`.
 
 ```typescript
 import { AuthPortComponent } from 'angular-stormpath';
@@ -518,7 +541,7 @@ Bootstrap.
 npm install --save bootstrap@3.3.7
 ```
 
-Then modify `.angular-cli.json` to add it to the styles array:
+Then modify `client/.angular-cli.json` to add it to the styles array:
 
 ```json
 "styles": [
@@ -528,6 +551,13 @@ Then modify `.angular-cli.json` to add it to the styles array:
 ```
 
 ### Verify Authentication Works
+
+Start the client using the following commands:
+
+```
+npm install
+ng serve
+```
 
 Navigate to <http://localhost:4200>, and you should see a login form like the following. 
 
@@ -546,12 +576,14 @@ sp-authport > .container {
 
 ![Angular Login Styled](static/angular-login-top-margin.png)
 
+If you don't see a top margin after making this change, it's because this is a progressive web application that caches resources. To clear the cache in Chrome, open Developer Tools and navigate to **Application** > **Clear Storage**, then scroll to the bottom and click the **Clear selected** button.
+
 You should be able to log in, see a welcome message, as well as a logout link. If the beer list doesn't load, it's likely
 because it was already loaded when the app first loaded, and you need to load its data again after logging in.
 
 ### Listen for Login in BeerListComponent
 
-Modify `beer-list.component.ts`, so it uses the `Stormpath` service to listen for an authenticated user.
+Modify `client/src/app/beer-list/beer-list.component.ts`, so it uses the `Stormpath` service to listen for an authenticated user.
 
 ```typescript
 import { Stormpath } from 'angular-stormpath';
@@ -564,8 +596,7 @@ import { Stormpath } from 'angular-stormpath';
 export class BeerListComponent implements OnInit {
   beers: Array<any>;
 
-  constructor(private beerService: BeerService,
-              private giphyService: GiphyService,
+  constructor(private beerService: BeerService, private giphyService: GiphyService,
               private stormpath: Stormpath) {
     // beerService is called when the app first loads, but hidden
     // because of this, it's not called again after login
@@ -592,5 +623,4 @@ git clone https://github.com/oktadeveloper/spring-boot-microservices-example.git
 git checkout okta
 ```
 
-Learn more about Okta and its Authentication API at [developer.okta.com](http://developer.okta.com). Don't forget to check
-out the [Okta Developer Blog](http://developer.okta.com/blog/) too!
+Learn more about Okta and its Authentication API at [developer.okta.com](http://developer.okta.com). If you have issues with this tutorial, please hit me up on Twitter [@mraible](https://twitter.com/mraible) or post a question to the [Okta Developer Forums](https://devforum.okta.com). 
