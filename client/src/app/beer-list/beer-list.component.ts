@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BeerService } from '../shared/beer/beer.service';
 import { GiphyService } from '../shared/giphy/giphy.service';
+import { Stormpath } from 'angular-stormpath';
 
 @Component({
   selector: 'app-beer-list',
@@ -8,10 +9,19 @@ import { GiphyService } from '../shared/giphy/giphy.service';
   styleUrls: ['./beer-list.component.css']
 })
 export class BeerListComponent implements OnInit {
-
   beers: Array<any>;
 
-  constructor(private beerService: BeerService, private giphyService: GiphyService) { }
+  constructor(private beerService: BeerService, private giphyService: GiphyService,
+              private stormpath: Stormpath) {
+    // beerService is called when the app first loads, but hidden
+    // because of this, it's not called again after login
+    // this listens for the user logging in re-calls beerService
+    stormpath.user$.subscribe(data => {
+      if (data) {
+        this.ngOnInit()
+      }
+    });
+  }
 
   ngOnInit() {
     this.beerService.getAll().subscribe(
@@ -24,5 +34,4 @@ export class BeerListComponent implements OnInit {
       error => console.log(error)
     );
   }
-
 }

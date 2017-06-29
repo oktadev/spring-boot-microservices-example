@@ -67,7 +67,7 @@ serverUri=https://`app_domain pwa-edge-service`
 # Client 
 cd $r/client
 rm -rf dist
-sed -i -e "s|http://localhost:8081|$serverUri|g" $r/client/src/app/shared/beer/beer.service.ts
+sed -i -e "s|http://localhost:8081|$serverUri|g" $r/client/src/app/app.module.ts
 npm install && ng build -prod --aot
 python $r/sw.py
 cd dist
@@ -78,7 +78,7 @@ cf start pwa-client
 
 # cleanup changed files
 git checkout $r/client
-rm $r/client/src/app/shared/beer/beer.service.ts-e
+rm $r/client/src/app/app.module.ts-e
 
 # show apps and URLs
 cf apps
