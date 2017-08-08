@@ -62,10 +62,8 @@ Then add a dependency for Stormpath's Zuul integration.
 </dependency>
 ```
 
-<div style="border: 1px solid silver; padding: 5px; background: #eee">
-<strong>NOTE:</strong> I'm using Stormpath libraries in this example. We plan to release Okta libraries that have this
+> **NOTE:** I'm using Stormpath libraries in this example. We plan to release Okta libraries that have this
 same functionality soon. I'll make sure to update this post when the Okta Zuul support has been released.
-</div>
 
 Add the following properties and values to the project's `application.properties`.
 
