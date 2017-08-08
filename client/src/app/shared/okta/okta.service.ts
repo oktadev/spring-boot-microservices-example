@@ -1,4 +1,4 @@
-import { ApplicationRef, ChangeDetectorRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as OktaSignIn from '@okta/okta-signin-widget/dist/js/okta-sign-in.min.js'
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';
@@ -36,11 +36,11 @@ export class OktaAuthService {
         response.forEach(token => {
           if (token.idToken) {
             this.signIn.tokenManager.add('idToken', token);
-            this.userSource.next(this.idTokenAsUser);
           }
           if (token.accessToken) {
             this.signIn.tokenManager.add('accessToken', token);
           }
+          this.userSource.next(this.idTokenAsUser);
           this.signIn.hide();
         });
       } else {

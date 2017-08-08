@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { OktaAuthService } from './shared/okta/okta.service';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-root',
@@ -15,19 +14,21 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    // for initial load and browser refresh
     if (this.oktaService.isAuthenticated()) {
       this.user = this.oktaService.idTokenAsUser;
     } else {
       this.oktaService.login();
     }
 
-    // register a listener for authentication
+    // register a listener for authentication and logout
     this.oktaService.user$.subscribe(user => {
       this.user = user;
       if (!user) {
         this.oktaService.login();
       }
-      // Let angular know that model changed.
+      // Let Angular know that model changed.
+      // See https://github.com/okta/okta-signin-widget/issues/268 for more info.
       this.changeDetectorRef.detectChanges();
     });
   }

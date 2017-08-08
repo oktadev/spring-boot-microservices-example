@@ -11,9 +11,9 @@ export class BeerService {
   }
 
   getAll(): Observable<any> {
-    const accessToken = this.oktaService.signIn.tokenManager.get('accessToken');
     const headers: Headers = new Headers();
-    if (accessToken) {
+    if (this.oktaService.isAuthenticated()) {
+      const accessToken = this.oktaService.signIn.tokenManager.get('accessToken');
       headers.append('Authorization', accessToken.tokenType + ' ' + accessToken.accessToken);
     }
     const options = new RequestOptions({ headers: headers });
