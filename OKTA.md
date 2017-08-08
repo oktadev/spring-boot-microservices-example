@@ -660,10 +660,10 @@ If you'd rather disable Remember Me, update `client/src/app/shared/okta/okta.ser
 
 ```typescript
 signIn = new OktaSignIn({
-  baseUrl: 'https://dev-158606.oktapreview.com',
-  clientId: 'MjlYvTtFW26gOoOAHKOz',
+  baseUrl: '{yourOktaDomain}',
+  clientId: '{clientId}',
   authParams: {
-    issuer: 'https://dev-158606.oktapreview.com',
+    issuer: '{yourOktaDomain}',
     responseType: ['id_token', 'token'],
     scopes: ['openid', 'email', 'profile']
   },
