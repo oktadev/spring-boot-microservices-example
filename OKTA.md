@@ -602,8 +602,8 @@ Okta's Sign-In Widget ships with CSS that make it looks good out-of-the-box. To 
  `client/src/styles.css` to have the following two imports. 
 
 ```css
-@import '~@okta/okta-signin-widget/dist/css/okta-sign-in.min.css';
-@import '~@okta/okta-signin-widget/dist/css/okta-theme.css';
+@import '~https://ok1static.oktacdn.com/assets/js/sdk/okta-signin-widget/2.1.0/css/okta-sign-in.min.css';
+@import '~https://ok1static.oktacdn.com/assets/js/sdk/okta-signin-widget/2.1.0/css/okta-theme.css';
 ```
 
 ### Verify Authentication Works
@@ -627,51 +627,7 @@ If you want to adjust the style of the form, so it isn't right up against the to
 
 You should be able to log in, see a welcome message, as well as a logout button.
 
-![Angular Welcome](static/angular-welcome.png) 
-
-#### Fixing the Remember Me checkbox in 2.1.0
-
-You might notice on the login form that it has a line for "Remember Me", but no checkbox. This is a [bug](https://github.com/okta/okta-signin-widget/pull/248) and will be fixed in a future release. As a workaround, you can do two things:
-
-1. Copy the image into your project and add its directory as an asset.
-2. Disable the Remember Me feature.
-
-To copy the image into your project, run the following commands to create a directory and copy the image into it.
-
-```bash
-cd client
-mkdir -p src/img/ui/forms
-cp node_modules/@okta/okta-signin-widget/dist/img/ui/forms/checkbox-sign-in-widget@2x.png src/img/ui/forms/.
-```
-
-You'll also need to update `client/.angular-cli.json` to include the `img` directory.
-
-```json
-"assets": [
-  "assets",
-  "img",
-  "favicon.ico",
-  "sw.js"
-],
-```
-
-If you'd rather disable Remember Me, update `client/src/app/shared/okta/okta.service.ts` to turn it off using a 
-[feature flag](https://developer.okta.com/code/javascript/okta_sign-in_widget_ref#feature-flags).
-
-```typescript
-signIn = new OktaSignIn({
-  baseUrl: '{yourOktaDomain}',
-  clientId: '{clientId}',
-  authParams: {
-    issuer: '{yourOktaDomain}',
-    responseType: ['id_token', 'token'],
-    scopes: ['openid', 'email', 'profile']
-  },
-  features: {
-    rememberMe: false
-  }
-});
-```
+![Angular Welcome](static/angular-welcome.png)
 
 ## Learn More
 
