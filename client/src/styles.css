@@ -1,11 +1,13 @@
 @import '~https://fonts.googleapis.com/icon?family=Material+Icons';
 @import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
+@import '~@okta/okta-signin-widget/dist/css/okta-sign-in.min.css';
+@import '~@okta/okta-signin-widget/dist/css/okta-theme.css';
 
 body {
   margin: 0;
   font-family: Roboto, sans-serif;
 }
 
-sp-authport > .container {
+#okta-signin-container {
   margin-top: 25px;
 }

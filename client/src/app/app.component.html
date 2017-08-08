@@ -2,17 +2,17 @@
   <span>{{title}}</span>
 </md-toolbar>
 
-<sp-authport></sp-authport>
+<!-- Container to inject the Sign-In Widget -->
+<div id="okta-signin-container"></div>
 
-<div *ngIf="(user$ | async)" class="row text-center">
+<div *ngIf="user">
   <h2>
-    Welcome, {{ ( user$ | async ).givenName }}!
+    Welcome {{user?.name}}!
   </h2>
-  <ul class="nav nav-pills nav-stacked text-centered">
-    <li role="presentation" (click)="logout(); false"><a href="#">Logout</a></li>
-  </ul>
+
+  <button md-raised-button (click)="oktaService.logout()">Logout</button>
 </div>
 <md-progress-bar mode="indeterminate" *shellRender></md-progress-bar>
-<div [hidden]="!(user$ | async)" *shellNoRender>
+<div [hidden]="!user" *shellNoRender>
   <app-beer-list></app-beer-list>
 </div>

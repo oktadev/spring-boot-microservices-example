@@ -9,14 +9,7 @@ import { BeerService } from './shared/beer/beer.service';
 import { GiphyService } from './shared/giphy/giphy.service';
 import { MaterialModule } from '@angular/material';
 import { AppShellModule } from '@angular/app-shell';
-import { StormpathConfiguration, StormpathModule } from 'angular-stormpath';
-
-export function stormpathConfig(): StormpathConfiguration {
-  let spConfig: StormpathConfiguration = new StormpathConfiguration();
-  spConfig.endpointPrefix = 'http://localhost:8081';
-  spConfig.autoAuthorizedUris.push(new RegExp(spConfig.endpointPrefix + '/*'));
-  return spConfig;
-}
+import { OktaAuthService } from './shared/okta/okta.service';
 
 @NgModule({
   declarations: [
@@ -28,12 +21,10 @@ export function stormpathConfig(): StormpathConfiguration {
     FormsModule,
     HttpModule,
     MaterialModule,
-    AppShellModule.runtime(),
-    StormpathModule
+    AppShellModule.runtime()
   ],
   providers: [
-    BeerService, GiphyService,
-    { provide: StormpathConfiguration, useFactory: stormpathConfig },
+    BeerService, GiphyService, OktaAuthService
   ],
   bootstrap: [AppComponent]
 })
