@@ -62,6 +62,11 @@ Then add a dependency for Stormpath's Zuul integration.
 </dependency>
 ```
 
+<div style="border: 1px solid silver; padding: 5px; background: #eee">
+<strong>NOTE:</strong> I'm using Stormpath libraries in this example. We plan to release Okta libraries that have this
+same functionality soon. I'll make sure to update this post when the Okta Zuul support has been released.
+</div>
+
 Add the following properties and values to the project's `application.properties`.
 
 ```properties
@@ -417,114 +422,190 @@ After logging in, you should see a page displaying your user's information.
 
 Click the **Logout** button to delete the cookies in your browser and end your session.
 
-## Add Stormpath's Angular Support to the Client
+## Add Okta's Sign-In Widget to the Client
 
-Install Stormpath's Angular SDK to make it possible to communicate with the secured server.
+Install [Okta's Sign-In Widget](https://developer.okta.com/code/javascript/okta_sign-in_widget) to make it possible to communicate with the secured server.
 
 ```bash
-npm install --save angular-stormpath
+cd client
+npm install @okta/okta-signin-widget --save
 ```
 
-**NOTE**: You can also use angular-oauth2-oidc and the Okta Auth SDK as described in [Add Authentication to Your Angular PWA](/blog/2017/06/13/add-authentication-angular-pwa).
-
-Modify `app.module.ts` to import `StormpathConfiguration` and `StormpathModule`. Then create a function to configure the endpointPrefix to point to `http://localhost:8081`. This function also configures the Angular SDK, so it passes
-an `Authorization` header to any endpoint that matches `http://localhost:8081/*`. 
+Create `client/src/app/shared/okta/okta.service.ts` and use it to configure the widget to talk to your Okta instance.
 
 ```typescript
-import { StormpathConfiguration, StormpathModule } from 'angular-stormpath';
- 
-export function stormpathConfig(): StormpathConfiguration {
-  let spConfig: StormpathConfiguration = new StormpathConfiguration();
-  spConfig.endpointPrefix = 'http://localhost:8081';
-  spConfig.autoAuthorizedUris.push(new RegExp(spConfig.endpointPrefix + '/*'));
-  return spConfig;
+import { Injectable } from '@angular/core';
+import * as OktaSignIn from '@okta/okta-signin-widget/dist/js/okta-sign-in.min.js'
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Observable } from 'rxjs/Observable';
+
+@Injectable()
+export class OktaAuthService {
+
+  signIn = new OktaSignIn({
+    baseUrl: 'https://{yourOktaDomain}',
+    clientId: '{clientId}',
+    authParams: {
+      issuer: 'https://{yourOktaDomain}',
+      responseType: ['id_token', 'token'],
+      scopes: ['openid', 'email', 'profile']
+    }
+  });
+
+  public user$: Observable<any>;
+  public userSource: ReplaySubject<any>;
+
+  constructor() {
+    this.userSource = new ReplaySubject<any>(1);
+    // create an observable that can be subscribed to for user events
+    this.user$ = this.userSource.asObservable();
+  }
+
+  isAuthenticated() {
+    // Checks if there is a current accessToken in the TokenManger.
+    return !!this.signIn.tokenManager.get('accessToken');
+  }
+
+  login() {
+    // Launches the widget and stores the tokens.
+    this.signIn.renderEl({el: '#okta-signin-container'}, response => {
+      if (response.status === 'SUCCESS') {
+        response.forEach(token => {
+          if (token.idToken) {
+            this.signIn.tokenManager.add('idToken', token);
+          }
+          if (token.accessToken) {
+            this.signIn.tokenManager.add('accessToken', token);
+          }
+          this.userSource.next(this.idTokenAsUser);
+          this.signIn.hide();
+        });
+      } else {
+        console.error(response);
+      }
+    });
+  }
+
+  get idTokenAsUser() {
+    const token = this.signIn.tokenManager.get('idToken');
+    return {
+      name: token.claims.name,
+      email: token.claims.email,
+      username: token.claims.preferred_username
+    }
+  }
+
+  async logout() {
+    // Terminates the session with Okta and removes current tokens.
+    this.signIn.tokenManager.clear();
+    await this.signIn.signOut();
+    this.signIn.remove();
+    this.userSource.next(undefined);
+  }
 }
 ```
 
-In this same file, add `StormpathModule` to the imports in `@NgModule` and use the `stormpathConfig` function to override 
-the default `StormpathConfiguration` in the `providers` list.
+Make sure to replace `{yourOktaDomain}` and `{client}` in the above code.
+
+Modify `client/src/app/shared/beer/beer.service.ts` to read the access token and set it in an `Authorization` header when 
+it exists. 
 
 ```typescript
-@NgModule({
-  …
-  imports: [
-    ...
-    StormpathModule
-  ],
-  providers: [
-    BeerService, GiphyService,
-    { provide: StormpathConfiguration, useFactory: stormpathConfig },
-  ],
-  bootstrap: [AppComponent]
-})
-```
-
-You can also modify `beer.service.ts` to read the `endpointPrefix` from `StormpathConfiguration`. This will allow you to 
-change your APIs location in a single file (`app.module.ts`), which is useful when deploying to production.
-
-```typescript
-import { StormpathConfiguration } from 'angular-stormpath';
+import { Injectable } from '@angular/core';
+import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+import { OktaAuthService } from '../okta/okta.service';
 
 @Injectable()
 export class BeerService {
 
-  constructor(private http: Http, private config: StormpathConfiguration) {
+  constructor(private http: Http, private oktaService: OktaAuthService) {
   }
 
   getAll(): Observable<any> {
-    return this.http.get(this.config.endpointPrefix + '/good-beers')
+    const headers: Headers = new Headers();
+    if (this.oktaService.isAuthenticated()) {
+      const accessToken = this.oktaService.signIn.tokenManager.get('accessToken');
+      headers.append('Authorization', accessToken.tokenType + ' ' + accessToken.accessToken);
+    }
+    const options = new RequestOptions({ headers: headers });
+    return this.http.get('http://localhost:8081/good-beers', options)
       .map((response: Response) => response.json());
   }
 }
 ```
 
-Modify `app.component.html` to add the Stormpath `<sp-authport></sp-authport>` component and a section to show the user’s 
-name and a logout link.
+Modify `app.component.html` to add a placeholder for the widget and a section to show the user’s name and a logout button.
 
 ```html
 <md-toolbar color="primary">
   <span>{{title}}</span>
 </md-toolbar>
 
-<sp-authport></sp-authport>
+<!-- Container to inject the Sign-In Widget -->
+<div id="okta-signin-container"></div>
 
-<div *ngIf="(user$ | async)" class="row text-center">
+<div *ngIf="user">
   <h2>
-    Welcome, {{ ( user$ | async ).givenName }}!
+    Welcome {{user?.name}}!
   </h2>
-  <ul class="nav nav-pills nav-stacked text-centered">
-    <li role="presentation" (click)="logout(); false"><a href="#">Logout</a></li>
-  </ul>
+
+  <button md-raised-button (click)="oktaService.logout()">Logout</button>
 </div>
 <md-progress-bar mode="indeterminate" *shellRender></md-progress-bar>
-<div [hidden]="!(user$ | async)" *shellNoRender>
+<div [hidden]="!user" *shellNoRender>
   <app-beer-list></app-beer-list>
 </div>
 ```
 
-You’ll notice the `user$` variable in the HTML. To resolve this, you need to change your `AppComponent`, so it extends 
-`AuthPortComponent`.
+You’ll notice the `user` variable in the HTML. To resolve this, you need to change your `AppComponent`, so it 1) shows
+the login or converts the token on initial load and 2) subscribes to changes in the `user$` observable from `OktaAuthService`.
 
 ```typescript
-import { AuthPortComponent } from 'angular-stormpath';
-...
-export class AppComponent extends AuthPortComponent {
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { OktaAuthService } from './shared/okta/okta.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent implements OnInit {
+  title = 'app works!';
+  user;
+
+  constructor(public oktaService: OktaAuthService, private changeDetectorRef: ChangeDetectorRef) {
+  }
+
+  ngOnInit() {
+    // 1. for initial load and browser refresh
+    if (this.oktaService.isAuthenticated()) {
+      this.user = this.oktaService.idTokenAsUser;
+    } else {
+      this.oktaService.login();
+    }
+
+    // 2. register a listener for authentication and logout
+    this.oktaService.user$.subscribe(user => {
+      this.user = user;
+      if (!user) {
+        this.oktaService.login();
+      }
+      // Let Angular know that model changed.
+      // See https://github.com/okta/okta-signin-widget/issues/268 for more info.
+      this.changeDetectorRef.detectChanges();
+    });
+  }
+}
 ```
 
-Stormpath's Angular SDK uses Bootstrap classes in its HTML templates. To make the login component look good, install 
-Bootstrap.
+Okta's Sign-In Widget ships with CSS that make it looks good out-of-the-box. To use them in your application, modify 
+ `client/src/styles.css` to have the following two imports. 
 
-```bash
-npm install --save bootstrap@3.3.7
-```
-
-Then modify `.angular-cli.json` to add it to the styles array:
-
-```json
-"styles": [
-  "../node_modules/bootstrap/dist/css/bootstrap.min.css",
-  "styles.css"
-],
+```css
+@import '~@okta/okta-signin-widget/dist/css/okta-sign-in.min.css';
+@import '~@okta/okta-signin-widget/dist/css/okta-theme.css';
 ```
 
 ### Verify Authentication Works
@@ -539,48 +620,60 @@ your browser. Clear your cookies, or try an incognito window.
 If you want to adjust the style of the form, so it isn't right up against the top toolbar, add the following to `styles.css`.
 
 ```css
-sp-authport > .container {
+#okta-signin-container {
   margin-top: 25px;
 }
 ```
 
 ![Angular Login Styled](static/angular-login-top-margin.png)
 
-You should be able to log in, see a welcome message, as well as a logout link. If the beer list doesn't load, it's likely
-because it was already loaded when the app first loaded, and you need to load its data again after logging in.
+You should be able to log in, see a welcome message, as well as a logout button.
 
-### Listen for Login in BeerListComponent
+![Angular Welcome](static/angular-welcome.png) 
 
-Modify `beer-list.component.ts`, so it uses the `Stormpath` service to listen for an authenticated user.
+#### Fixing the Remember Me checkbox in 2.1.0
 
-```typescript
-import { Stormpath } from 'angular-stormpath';
+You might notice on the login form that it has a line for "Remember Me", but no checkbox. This is a [bug](https://github.com/okta/okta-signin-widget/pull/248) and will be fixed in a future release. As a workaround, you can do two things:
 
-@Component({
-  selector: 'app-beer-list',
-  templateUrl: './beer-list.component.html',
-  styleUrls: ['./beer-list.component.css']
-})
-export class BeerListComponent implements OnInit {
-  beers: Array<any>;
+1. Copy the image into your project and add its directory as an asset.
+2. Disable the Remember Me feature.
 
-  constructor(private beerService: BeerService,
-              private giphyService: GiphyService,
-              private stormpath: Stormpath) {
-    // beerService is called when the app first loads, but hidden
-    // because of this, it's not called again after login
-    // this listens for the user logging in and re-calls ngOnInit
-    stormpath.user$.subscribe(data => {
-      if (data) {
-        this.ngOnInit()
-      }
-    });
-  }
+To copy the image into your project, run the following commands to create a directory and copy the image into it.
+
+```bash
+cd client
+mkdir -p src/img/ui/forms
+cp node_modules/@okta/okta-signin-widget/dist/img/ui/forms/checkbox-sign-in-widget@2x.png src/img/ui/forms/.
 ```
 
-After making this change, authentication should work as expected.
+You'll also need to update `client/.angular-cli.json` to include the `img` directory.
 
-![Angular Welcome](static/angular-welcome.png)
+```json
+"assets": [
+  "assets",
+  "img",
+  "favicon.ico",
+  "sw.js"
+],
+```
+
+If you'd rather disable Remember Me, update `client/src/app/shared/okta/okta.service.ts` to turn it off using a 
+[feature flag](https://developer.okta.com/code/javascript/okta_sign-in_widget_ref#feature-flags).
+
+```typescript
+signIn = new OktaSignIn({
+  baseUrl: 'https://dev-158606.oktapreview.com',
+  clientId: 'MjlYvTtFW26gOoOAHKOz',
+  authParams: {
+    issuer: 'https://dev-158606.oktapreview.com',
+    responseType: ['id_token', 'token'],
+    scopes: ['openid', 'email', 'profile']
+  },
+  features: {
+    rememberMe: false
+  }
+});
+```
 
 ## Learn More
 
@@ -592,5 +685,6 @@ git clone https://github.com/oktadeveloper/spring-boot-microservices-example.git
 git checkout okta
 ```
 
-Learn more about Okta and its Authentication API at [developer.okta.com](http://developer.okta.com). Don't forget to check
-out the [Okta Developer Blog](http://developer.okta.com/blog/) too!
+Learn more about Okta and its APIs at [developer.okta.com](http://developer.okta.com). If you have questions about this 
+tutorial, please [hit me up on Twitter](https://twitter.com/mraible) or post your question to our 
+[Developer Forums](https://devforum.okta.com/).

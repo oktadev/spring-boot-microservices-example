@@ -1,8 +1,8 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { MaterialModule } from '@angular/material';
-import { StormpathModule } from 'angular-stormpath';
 import { BeerListComponent } from './beer-list/beer-list.component';
+import { OktaAuthService } from './shared/okta/okta.service';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -10,7 +10,8 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent, BeerListComponent
       ],
-      imports: [MaterialModule, StormpathModule]
+      imports: [MaterialModule],
+      providers: [OktaAuthService]
     }).compileComponents();
   }));
 

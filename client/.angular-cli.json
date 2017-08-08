@@ -9,6 +9,7 @@
       "outDir": "dist",
       "assets": [
         "assets",
+        "img",
         "favicon.ico",
         "sw.js"
       ],
@@ -20,7 +21,6 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "styles.css"
       ],
       "scripts": [],
