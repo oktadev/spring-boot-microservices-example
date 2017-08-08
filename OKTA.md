@@ -684,5 +684,5 @@ git checkout okta
 ```
 
 Learn more about Okta and its APIs at [developer.okta.com](http://developer.okta.com). If you have questions about this 
-tutorial, please [hit me up on Twitter](https://twitter.com/mraible) or post your question to our 
-[Developer Forums](https://devforum.okta.com/).
+tutorial, please hit me up on Twitter [@mraible](https://twitter.com/mraible) or post a question to the 
+[Okta Developer Forums](https://devforum.okta.com).
