@@ -10,7 +10,7 @@ export class OktaAuthService {
     baseUrl: 'https://dev-158606.oktapreview.com',
     clientId: 'MjlYvTtFW26gOoOAHKOz',
     authParams: {
-      issuer: 'https://dev-158606.oktapreview.com',
+      issuer: 'default',
       responseType: ['id_token', 'token'],
       scopes: ['openid', 'email', 'profile']
     }
