@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
-import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs';
-import { OktaAuthService } from '../okta/okta.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class BeerService {
 
-  constructor(private http: Http, private oktaService: OktaAuthService) {
+  constructor(private http: HttpClient, private oktaService: OktaAuthService) {
   }
 
   getAll(): Observable<any> {
@@ -16,8 +14,7 @@ export class BeerService {
       const accessToken = this.oktaService.signIn.tokenManager.get('accessToken');
       headers.append('Authorization', accessToken.tokenType + ' ' + accessToken.accessToken);
     }
-    const options = new RequestOptions({ headers: headers });
-    return this.http.get('http://localhost:8081/good-beers', options)
-      .map((response: Response) => response.json());
+    return this.http.get('http://localhost:8081/good-beers',
+      {headers: new HttpHeaders().set()});
   }
 }

@@ -20,7 +20,7 @@ describe('BeerService', () => {
     });
   });
 
-  it('should ...', inject([BeerService], (service: BeerService) => {
+  it('should be created', inject([BeerService], (service: BeerService) => {
     expect(service).toBeTruthy();
   }));
 });
