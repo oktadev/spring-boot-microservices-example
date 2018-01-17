@@ -69,7 +69,6 @@ cd $r/client
 rm -rf dist
 sed -i -e "s|http://localhost:8081|$serverUri|g" $r/client/src/app/shared/beer/beer.service.ts
 npm install && ng build -prod --aot
-python $r/sw.py
 cd dist
 touch Staticfile
 cf push pwa-client --no-start --random-route
