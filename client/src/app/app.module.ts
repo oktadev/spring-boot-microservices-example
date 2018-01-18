@@ -1,12 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { MatListModule, MatToolbarModule, } from '@angular/material';
+
 import { AppComponent } from './app.component';
 import { BeerListComponent } from './beer-list/beer-list.component';
-import { BeerService } from './shared/beer/beer.service';
-import { GiphyService } from './shared/giphy/giphy.service';
+import { HttpClientModule } from '@angular/common/http';
+import { MatButtonModule, MatListModule, MatToolbarModule, } from '@angular/material';
 import { OktaAuthService } from './shared/okta/okta.service';
 
 @NgModule({
@@ -16,13 +14,10 @@ import { OktaAuthService } from './shared/okta/okta.service';
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     HttpClientModule,
-    MatListModule, MatToolbarModule
+    MatListModule, MatButtonModule, MatToolbarModule
   ],
-  providers: [
-    BeerService, GiphyService, OktaAuthService
-  ],
+  providers: [OktaAuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

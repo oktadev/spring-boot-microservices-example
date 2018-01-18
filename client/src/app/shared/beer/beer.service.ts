@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import { OktaAuthService } from '../okta/okta.service';
 
 @Injectable()
 export class BeerService {
@@ -9,12 +10,12 @@ export class BeerService {
   }
 
   getAll(): Observable<any> {
-    const headers: Headers = new Headers();
+    let headers: HttpHeaders = new HttpHeaders();
     if (this.oktaService.isAuthenticated()) {
       const accessToken = this.oktaService.signIn.tokenManager.get('accessToken');
-      headers.append('Authorization', accessToken.tokenType + ' ' + accessToken.accessToken);
+      // headers is immutable, so re-assign
+      headers = headers.append('Authorization', accessToken.tokenType + ' ' + accessToken.accessToken);
     }
-    return this.http.get('http://localhost:8081/good-beers',
-      {headers: new HttpHeaders().set()});
+    return this.http.get('http://localhost:8081/good-beers', {headers: headers});
   }
 }
