@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BeerService, GiphyService } from '../shared';
 
 @Component({
@@ -11,14 +11,18 @@ export class BeerListComponent implements OnInit {
   beers: Array<any>;
 
   constructor(private beerService: BeerService,
-              private giphyService: GiphyService) { }
+              private giphyService: GiphyService,
+              private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.beerService.getAll().subscribe(
       data => {
         this.beers = data;
         for (const beer of this.beers) {
-          this.giphyService.get(beer.name).subscribe(url => beer.giphyUrl = url);
+          this.giphyService.get(beer.name).subscribe(url => {
+            beer.giphyUrl = url;
+            this.changeDetectorRef.detectChanges();
+          });
         }
       },
       error => console.log(error)
