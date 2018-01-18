@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 // http://tutorials.pluralsight.com/front-end-javascript/getting-started-with-angular-2-by-building-a-giphy-search-application
 export class GiphyService {
 
-  giphyApi = 'https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=';
+  // Public beta key: https://github.com/Giphy/GiphyAPI#public-beta-key
+  giphyApi = '//api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=';
 
-  constructor(public http: Http) {
+  constructor(public http: HttpClient) {
   }
 
-  get(searchTerm): Observable<any> {
+  get(searchTerm) {
     const apiLink = this.giphyApi + searchTerm;
-    return this.http.request(apiLink).map((res: Response) => {
-      const results = res.json().data;
-      if (results.length > 0) {
-        return results[0].images.original.url;
+    return this.http.get(apiLink).map((response: any) => {
+      if (response.data.length > 0) {
+        return response.data[0].images.original.url;
       } else {
         return 'https://media.giphy.com/media/YaOxRsmrv9IeA/giphy.gif'; // dancing cat for 404
       }

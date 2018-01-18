@@ -1,15 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { BeerListComponent } from './beer-list/beer-list.component';
-import { BeerService } from './shared/beer/beer.service';
-import { GiphyService } from './shared/giphy/giphy.service';
-import { MaterialModule } from '@angular/material';
-import { AppShellModule } from '@angular/app-shell';
-import { OktaAuthService } from './shared/okta/okta.service';
+import { HttpClientModule } from '@angular/common/http';
+import { MatButtonModule, MatListModule, MatToolbarModule, } from '@angular/material';
+import { OktaService } from './shared/okta/okta.service';
 
 @NgModule({
   declarations: [
@@ -18,14 +14,10 @@ import { OktaAuthService } from './shared/okta/okta.service';
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    HttpModule,
-    MaterialModule,
-    AppShellModule.runtime()
+    HttpClientModule,
+    MatListModule, MatButtonModule, MatToolbarModule
   ],
-  providers: [
-    BeerService, GiphyService, OktaAuthService
-  ],
+  providers: [OktaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
