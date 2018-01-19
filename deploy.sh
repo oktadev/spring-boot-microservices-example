@@ -67,7 +67,7 @@ serverUri=https://`app_domain pwa-edge-service`
 # Client 
 cd $r/client
 rm -rf dist
-sed -i -e "s|http://localhost:8081|$serverUri|g" $r/client/src/app/app.module.ts
+sed -i -e "s|http://localhost:8081|$serverUri|g" $r/client/src/app/shared/beer/beer.service.ts
 npm install && ng build -prod --aot
 cd dist
 touch Staticfile
@@ -76,8 +76,8 @@ cf set-env pwa-client FORCE_HTTPS true
 cf start pwa-client
 
 # cleanup changed files
-git checkout $r/client
-rm $r/client/src/app/app.module.ts-e
+sed -i -e "s|$serverUri|http://localhost:8081|g" $r/client/src/app/shared/beer/beer.service.ts
+rm $r/client/src/app/shared/beer/beer.service.ts-e
 
 # show apps and URLs
 cf apps
