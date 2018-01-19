@@ -76,7 +76,7 @@ cf set-env pwa-client FORCE_HTTPS true
 cf start pwa-client
 
 # cleanup changed files
-git checkout $r/client
+sed -i -e "s|$serverUri|http://localhost:8081|g" $r/client/src/app/shared/beer/beer.service.ts
 rm $r/client/src/app/shared/beer/beer.service.ts-e
 
 # show apps and URLs
