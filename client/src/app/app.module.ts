@@ -4,8 +4,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BeerListComponent } from './beer-list/beer-list.component';
 import { HttpClientModule } from '@angular/common/http';
-import { MatListModule, MatToolbarModule } from '@angular/material';
-import { OktaAuthService } from './shared/okta/okta.service';
+import { MatButtonModule, MatListModule, MatToolbarModule, } from '@angular/material';
+import { OktaService } from './shared/okta/okta.service';
 
 @NgModule({
   declarations: [
@@ -15,9 +15,9 @@ import { OktaAuthService } from './shared/okta/okta.service';
   imports: [
     BrowserModule,
     HttpClientModule,
-    MatListModule, MatToolbarModule
+    MatListModule, MatButtonModule, MatToolbarModule
   ],
-  providers: [OktaAuthService],
+  providers: [OktaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
