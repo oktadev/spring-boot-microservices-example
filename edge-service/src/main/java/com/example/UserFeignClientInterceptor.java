@@ -17,9 +17,10 @@ public class UserFeignClientInterceptor implements RequestInterceptor {
     public void apply(RequestTemplate template) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-
+        System.out.println("authentication" + authentication);
         if (authentication != null && authentication.getDetails() instanceof OAuth2AuthenticationDetails) {
             OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
+            System.out.println("token" + details.getTokenValue());
             template.header(AUTHORIZATION_HEADER, String.format("%s %s", BEARER_TOKEN_TYPE, details.getTokenValue()));
         }
     }
