@@ -8,13 +8,13 @@ import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher
 
 @Configuration
 @EnableResourceServer
-public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
             .requestMatcher(new RequestHeaderRequestMatcher("Authorization"))
-            .authorizeRequests()
-            .antMatchers("/**").authenticated();
+            .authorizeRequests().anyRequest().fullyAuthenticated();
     }
+
 }

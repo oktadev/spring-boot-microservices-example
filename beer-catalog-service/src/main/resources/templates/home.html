@@ -31,11 +31,11 @@
     </style>
 </head>
 <body>
-<h1>Hello<span th:if="${user.authenticated}" th:text="' ' + ${user.givenName}"> Joe</span>!</h1>
-<div th:unless="${user.authenticated}">
+<h1>Hello<span th:if="${user}" th:text="' ' + ${user.name}"> Joe</span>!</h1>
+<div th:unless="${user}">
     <a th:href="@{/login}">Login</a>
 </div>
-<div th:if="${user.authenticated}">
+<div th:if="${user}">
     <form id="logoutForm" th:action="@{/logout}" method="post">
         <input type="submit" value="Logout"/>
     </form>
@@ -51,92 +51,32 @@
     </thead>
     <tbody>
     <tr>
-        <td>anonymous</td>
-        <td th:text="${user.anonymous}"></td>
-    </tr>
-    <tr>
-        <td>authenticated</td>
-        <td th:text="${user.authenticated}"></td>
-    </tr>
-    <tr>
-        <td>href</td>
-        <td th:text="${user.href}"></td>
-    </tr>
-    <tr>
-        <td>id</td>
-        <td th:text="${user.id}"></td>
+        <td>sub</td>
+        <td th:text="${user.sub}"></td>
     </tr>
     <tr>
         <td>name</td>
         <td th:text="${user.name}"></td>
     </tr>
     <tr>
-        <td>givenName</td>
-        <td th:text="${user.givenName}"></td>
+        <td>given_name</td>
+        <td th:text="${user.given_name}"></td>
     </tr>
     <tr>
-        <td>middleName</td>
-        <td th:text="${user.middleName}"></td>
+        <td>family_name</td>
+        <td th:text="${user.family_name}"></td>
     </tr>
     <tr>
-        <td>familyName</td>
-        <td th:text="${user.familyName}"></td>
-    </tr>
-    <tr>
-        <td>nickname</td>
-        <td th:text="${user.nickname}"></td>
-    </tr>
-    <tr>
-        <td>username</td>
-        <td th:text="${user.username}"></td>
-    </tr>
-    <tr>
-        <td>profile</td>
-        <td th:text="${user.profile}"></td>
-    </tr>
-    <tr>
-        <td>picture</td>
-        <td th:text="${user.picture}"></td>
-    </tr>
-    <tr>
-        <td>website</td>
-        <td th:text="${user.website}"></td>
+        <td>preferred_username</td>
+        <td th:text="${user.preferred_username}"></td>
     </tr>
     <tr>
         <td>email</td>
         <td th:text="${user.email}"></td>
     </tr>
     <tr>
-        <td>emailVerified</td>
-        <td th:text="${user.emailVerified}"></td>
-    </tr>
-    <tr>
-        <td>gender</td>
-        <td th:text="${user.gender}"></td>
-    </tr>
-    <tr>
-        <td>birthdate</td>
-        <td th:text="${user.birthdate}"></td>
-    </tr>
-    <tr>
-        <td>zoneInfo</td>
-        <td th:text="${user.zoneInfo}"></td>
-    </tr>
-    <tr>
-        <td>phoneNumber</td>
-        <td th:text="${user.phone}"></td>
-    </tr>
-    <tr>
-        <td>phoneNumberVerified</td>
-        <td th:text="${user.phoneNumberVerified}"></td>
-    </tr>
-    <tr>
-        <td>createdAt</td>
-        <td th:text="${user.createdAt}"></td>
-    </tr>
-    <tr>
-        <td>updatedAt</td>
-        <td th:text="${user.updatedAt}"></td>
+        <td>roles</td>
+        <td th:text="${user.roles}"></td>
     </tr>
     </tbody>
 </table>
