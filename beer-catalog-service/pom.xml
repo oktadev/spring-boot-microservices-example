@@ -24,24 +24,9 @@
         <java.version>1.8</java.version>
         <spring-cloud.version>Dalston.RELEASE</spring-cloud.version>
         <bouncycastle.version>1.56</bouncycastle.version>
-        <juiser.version>1.0.0</juiser.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <!-- To handle the X-Forwarded-User header: -->
-            <groupId>org.juiser</groupId>
-            <artifactId>juiser-spring-boot-starter</artifactId>
-            <version>${juiser.version}</version>
-        </dependency>
-        <dependency>
-            <!-- So juiser can read *.pem public key files to verify the signature of the JWT in the
-                 X-Forwarded-User header: -->
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcpkix-jdk15on</artifactId>
-            <version>${bouncycastle.version}</version>
-            <scope>runtime</scope>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
