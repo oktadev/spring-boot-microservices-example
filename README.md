@@ -68,8 +68,8 @@ Okta implements the [OAuth 2.0](https://oauth.net/) protocol for its API. This m
 
 **NOTE:** You'll need to change `security.oauth2.*` properties in the following directories for things to work with your Okta tenant.
 
-* [edge-service/src/main/resources/application.properties](tree/oauth/edge-service/src/main/resources/application.properties)
-* [beer-catalog-service/src/main/resources/application.properties](tree/oauth/beer-catalog-service/src/main/resources/application.properties)
+* [edge-service/src/main/resources/application.properties](/oktadeveloper/spring-boot-microservices-example/tree/oauth/edge-service/src/main/resources/application.properties)
+* [beer-catalog-service/src/main/resources/application.properties](/oktadeveloper/spring-boot-microservices-example/tree/oauth/beer-catalog-service/src/main/resources/application.properties)
 
 By default, you'll notice the properties are hard-coded to use [Keycloak](https://keycloak.org). If you'd like to use these settings, you can create a new project with [JHipster](http://www.jhipster.tech), select OAuth 2.0 / OIDC for authentication, then run its Docker image of Keycloak using:
 
