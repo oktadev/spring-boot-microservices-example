@@ -64,6 +64,8 @@ The code in the `okta` branch is described in [Secure a Spring Microservices Arc
 
 Okta implements the [OAuth 2.0](https://oauth.net/) protocol for its API. This means you can use libraries like [Spring Security OAuth](http://projects.spring.io/spring-security-oauth/) to provide single sign-on to your applications. Too see how to lock down your microservice architecture using Spring Security OAuth and Okta, please see the `oauth` branch. 
 
+> The changes required to move from the Stormpath SDK to Spring Security OAuth can be viewed in [pull request #8](https://github.com/oktadeveloper/spring-boot-microservices-example/pull/8/files).
+
 **NOTE:** You'll need to change `security.oauth2.*` properties in the following directories for things to work with your Okta tenant.
 
 * [edge-service/src/main/resources/application.properties](edge-service/src/main/resources/application.properties)
