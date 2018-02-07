@@ -42,6 +42,11 @@ public class EdgeServiceApplication {
     }
 
     @Bean
+    public RequestInterceptor getUserFeignClientInterceptor() {
+        return new UserFeignClientInterceptor();
+    }
+
+    @Bean
     public FilterRegistrationBean simpleCorsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();

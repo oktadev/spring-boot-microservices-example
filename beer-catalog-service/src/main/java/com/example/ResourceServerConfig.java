@@ -16,5 +16,4 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             .requestMatcher(new RequestHeaderRequestMatcher("Authorization"))
             .authorizeRequests().anyRequest().fullyAuthenticated();
     }
-
 }

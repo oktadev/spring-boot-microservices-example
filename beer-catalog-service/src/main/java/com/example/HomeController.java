@@ -11,9 +11,6 @@ import java.util.Map;
 @Controller
 public class HomeController {
 
-    public HomeController() {
-    }
-
     @GetMapping("/home")
     @SuppressWarnings("unchecked")
     public String howdy(Model model, Principal principal) {
