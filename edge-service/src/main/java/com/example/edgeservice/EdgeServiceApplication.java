@@ -1,4 +1,4 @@
-package com.example;
+package com.example.edgeservice;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.Data;
@@ -23,14 +23,14 @@ import java.util.stream.Collectors;
 @SpringBootApplication
 public class EdgeServiceApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(EdgeServiceApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(EdgeServiceApplication.class, args);
+	}
 }
 
 @Data
 class Beer {
-    private String name;
+	private String name;
 }
 
 @FeignClient("beer-catalog-service")
