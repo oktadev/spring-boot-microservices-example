@@ -1,11 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { BeerListComponent } from './beer-list/beer-list.component';
-import { HttpClientModule } from '@angular/common/http';
-import { MatButtonModule, MatListModule, MatToolbarModule, } from '@angular/material';
-import { OktaService } from './shared/okta/okta.service';
+import { MatButtonModule, MatListModule, MatToolbarModule } from '@angular/material';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -15,9 +15,11 @@ import { OktaService } from './shared/okta/okta.service';
   imports: [
     BrowserModule,
     HttpClientModule,
-    MatListModule, MatButtonModule, MatToolbarModule
+    MatButtonModule, MatListModule, MatToolbarModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
   ],
-  providers: [OktaService],
+  providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
