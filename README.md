@@ -50,34 +50,37 @@ echo "Starting Angular Client..."
 npm start
 ```
 
-The primary example (without authentication) is in the `master` branch, while the Okta integration is in the `okta` branch. This branch uses the Stormpath Java SDK on the backend and the Sign-In Widget on the front end. 
+The primary example (without authentication) is in the `master` branch. A pure Spring Security OAuth implementation is in an `oauth` branch, and an example with the Stormpath SDK is in the `okta` branch. Both branches use the Okta Sign-In Widget on the front end. 
 
-To check out the Okta branch on your local machine, run the following command.
+### Spring Security OAuth
+
+Okta implements the [OAuth 2.0](https://oauth.net/) protocol for its API. This means you can use libraries like [Spring Security OAuth](http://projects.spring.io/spring-security-oauth/) to provide single sign-on to your applications. 
+
+To check out the branch that uses Spring Security OAuth, run the following command.
 
 ```bash
-git checkout okta
+git checkout oauth
 ```
 
-The code in the `okta` branch is described in [Secure a Spring Microservices Architecture with Spring Security, JWTs, Juiser, and Okta](https://developer.okta.com/blog/2017/08/08/secure-spring-microservices.html).
-
-### OAuth 2.0
-
-Okta implements the [OAuth 2.0](https://oauth.net/) protocol for its API. This means you can use libraries like [Spring Security OAuth](http://projects.spring.io/spring-security-oauth/) to provide single sign-on to your applications. Too see how to lock down your microservice architecture using Spring Security OAuth and Okta, please see the `oauth` branch. 
+<!--
+The code in the `oauth` branch is described in [Secure a Spring Microservices Architecture with Spring Security and OAuth](https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-oauth).-->
 
 > The changes required to move from the Stormpath SDK to Spring Security OAuth can be viewed in [pull request #8](https://github.com/oktadeveloper/spring-boot-microservices-example/pull/8/files).
 
-**NOTE:** You'll need to change `security.oauth2.*` properties in the following directories for things to work with your Okta tenant.
+### Create Applications in Okta
+
+If you don't have one, [create an Okta Developer account](https://developer.okta.com/signup/). After you've completed the setup process, log in to your account and navigate to **Applications** > **Add Application**. Click **Web** and **Next**. On the next page, enter the following values and click **Done**.
+
+* Application Name: `Spring OAuth`
+* Base URIs: `http://localhost:8081`
+* Login redirect URIs: `http://localhost:8081/login`
+
+Change `security.oauth2.*` properties in the following files to enter your client ID and client secret. 
 
 * [edge-service/src/main/resources/application.properties](../../tree/oauth/edge-service/src/main/resources/application.properties)
 * [beer-catalog-service/src/main/resources/application.properties](../../tree/oauth/beer-catalog-service/src/main/resources/application.properties)
 
-By default, you'll notice the properties are hard-coded to use [Keycloak](https://keycloak.org). If you'd like to use these settings, you can create a new project with [JHipster](http://www.jhipster.tech), select OAuth 2.0 / OIDC for authentication, then run its Docker image of Keycloak using:
-
-```bash
-docker-compose -f src/main/docker/keycloak.yml up
-```
-
-To configure everything for Okta, you can create a `~/.okta.env` file like the following:
+You can also create a `~/.okta.env` file to overrride the properties in these files.
 
 ```bash
 #!/bin/bash
@@ -96,6 +99,34 @@ Then run the following before starting any servers.
 ```source
 source ~/.okta.env
 ```
+
+To use Okta's Sign-In Widget, you'll need to modify your app in Okta to enable an *Implicit* grant type. Log in to your account, navigate to **Applications** > **Spring OAuth** > **General** tab and click **Edit**. Enable **Implicit (Hybrid)** under **Allowed grant types** and select both checkboxes below it. Add `http://localhost:4200` under **Login redirect URIs** and click **Save**.
+
+In order for the Sign-In Widget to make requests to this application, you'll also need to configure the client URL as a trusted origin. Click **API** > **Trusted Origins** > **Add Origin**. Enter `http://localhost:4200` as the **Origin URL** and select both checkboxes under it.
+
+Change `{clientId}` and `{yourOktaDomain}` in `client/src/app/shared/okta/okta.service.ts` to match your app's values.
+
+```typescript
+signIn = new OktaSignIn({
+  baseUrl: 'https://{yourOktaDomain}.com',
+  clientId: '{clientId}',
+  authParams: {
+    issuer: 'default',
+    responseType: ['id_token', 'token'],
+    scopes: ['openid', 'email', 'profile']
+  }
+});
+```
+
+### Stormpath SDK
+
+To check out the branch that uses the Stormpath SDK, run the following command.
+
+```bash
+git checkout okta
+```
+
+The code in the `okta` branch is described in [Secure a Spring Microservices Architecture with Spring Security, JWTs, Juiser, and Okta](https://developer.okta.com/blog/2017/08/08/secure-spring-microservices).
 
 ### Create Applications in Okta
 

@@ -16,6 +16,6 @@ export class BeerService {
       // headers is immutable, so re-assign
       headers = headers.append('Authorization', accessToken.tokenType + ' ' + accessToken.accessToken);
     }
-    return this.http.get('http://localhost:8081/good-beers', {headers: headers});
+    return this.http.get('https://pwa-edge-service.cfapps.io/good-beers', {headers: headers});
   }
 }

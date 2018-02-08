@@ -6,6 +6,6 @@ export class AppPage {
   }
 
   getParagraphText() {
-    return element(by.css('app-root md-toolbar span')).getText();
+    return element(by.css('app-root h1')).getText();
   }
 }

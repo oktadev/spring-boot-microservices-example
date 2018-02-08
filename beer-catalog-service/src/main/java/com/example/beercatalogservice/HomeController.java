@@ -1,4 +1,4 @@
-package com.example;
+package com.example.beercatalogservice;
 
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;
@@ -10,9 +10,6 @@ import java.util.Map;
 
 @Controller
 public class HomeController {
-
-    public HomeController() {
-    }
 
     @GetMapping("/home")
     @SuppressWarnings("unchecked")

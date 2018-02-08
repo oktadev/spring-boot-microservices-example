@@ -11,8 +11,7 @@ export class AppComponent implements OnInit {
   user;
   signIn;
 
-  constructor(private oktaService: OktaService,
-              private changeDetectorRef: ChangeDetectorRef) {
+  constructor(private oktaService: OktaService, private changeDetectorRef: ChangeDetectorRef) {
     this.signIn = oktaService.getWidget();
   }
 
