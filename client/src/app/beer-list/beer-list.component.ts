@@ -10,8 +10,7 @@ import { BeerService, GiphyService } from '../shared';
 export class BeerListComponent implements OnInit {
   beers: Array<any>;
 
-  constructor(private beerService: BeerService,
-              private giphyService: GiphyService) { }
+  constructor(private beerService: BeerService, private giphyService: GiphyService) { }
 
   ngOnInit() {
     this.beerService.getAll().subscribe(
