@@ -1,4 +1,4 @@
-package com.example;
+package com.example.beercatalogservice;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,7 +45,8 @@ class Beer {
 }
 
 @RepositoryRestResource
-interface BeerRepository extends JpaRepository<Beer, Long> {}
+interface BeerRepository extends JpaRepository<Beer, Long> {
+}
 
 @Component
 class BeerInitializer implements CommandLineRunner {

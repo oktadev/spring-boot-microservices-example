@@ -1,4 +1,4 @@
-package com.example;
+package com.example.edgeservice;
 
 import com.stormpath.sdk.servlet.http.Resolver;
 import com.stormpath.zuul.account.ForwardedAccountHeaderFilter;

@@ -2,7 +2,6 @@
 
 set -e
 
-
 ### CloudFoundry CLI utilities
 
 CLOUD_DOMAIN=${DOMAIN:-run.pivotal.io}
@@ -64,7 +63,7 @@ cf start pwa-edge-service
 # Get the URL for the server
 serverUri=https://`app_domain pwa-edge-service`
 
-# Client 
+# Client
 cd $r/client
 rm -rf dist
 sed -i -e "s|http://localhost:8081|$serverUri|g" $r/client/src/app/shared/beer/beer.service.ts
