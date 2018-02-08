@@ -1,10 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MaterialModule } from '@angular/material';
 
 import { BeerListComponent } from './beer-list.component';
-import { BeerService } from '../shared/beer/beer.service';
-import { OktaAuthService } from '../shared/okta/okta.service';
-import { GiphyService } from '../shared/giphy/giphy.service';
 
 describe('BeerListComponent', () => {
   let component: BeerListComponent;
@@ -12,9 +8,7 @@ describe('BeerListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BeerListComponent],
-      imports: [MaterialModule],
-      providers: [BeerService, GiphyService, OktaAuthService]
+      declarations: [ BeerListComponent ]
     })
     .compileComponents();
   }));

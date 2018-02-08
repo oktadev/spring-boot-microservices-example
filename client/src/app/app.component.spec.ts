@@ -1,17 +1,11 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { MaterialModule } from '@angular/material';
-import { BeerListComponent } from './beer-list/beer-list.component';
-import { OktaAuthService } from './shared/okta/okta.service';
-
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent, BeerListComponent
+        AppComponent
       ],
-      imports: [MaterialModule],
-      providers: [OktaAuthService]
     }).compileComponents();
   }));
   it('should create the app', async(() => {

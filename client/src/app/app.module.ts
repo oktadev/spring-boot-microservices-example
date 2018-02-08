@@ -6,6 +6,7 @@ import { BeerListComponent } from './beer-list/beer-list.component';
 import { MatButtonModule, MatListModule, MatToolbarModule } from '@angular/material';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { OktaService } from './shared/okta/okta.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { environment } from '../environments/environment';
     MatButtonModule, MatListModule, MatToolbarModule,
     ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
   ],
-  providers: [],
+  providers: [OktaService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
