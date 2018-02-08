@@ -1,4 +1,4 @@
-package com.example;
+package com.example.beercatalogservice;
 
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Controller;

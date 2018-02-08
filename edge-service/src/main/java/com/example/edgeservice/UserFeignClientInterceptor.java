@@ -1,4 +1,4 @@
-package com.example;
+package com.example.edgeservice;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
