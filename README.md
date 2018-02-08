@@ -50,13 +50,52 @@ echo "Starting Angular Client..."
 npm start
 ```
 
-The primary example (without authentication) is in the `master` branch, while the Okta integration is in the `okta` branch. To check out the Okta branch on your local machine, run the following command.
+The primary example (without authentication) is in the `master` branch, while the Okta integration is in the `okta` branch. This branch uses the Stormpath Java SDK on the backend and the Sign-In Widget on the front end. 
+
+To check out the Okta branch on your local machine, run the following command.
 
 ```bash
 git checkout okta
 ```
 
 The code in the `okta` branch is described in [Secure a Spring Microservices Architecture with Spring Security, JWTs, Juiser, and Okta](https://developer.okta.com/blog/2017/08/08/secure-spring-microservices.html).
+
+### OAuth 2.0
+
+Okta implements the [OAuth 2.0](https://oauth.net/) protocol for its API. This means you can use libraries like [Spring Security OAuth](http://projects.spring.io/spring-security-oauth/) to provide single sign-on to your applications. Too see how to lock down your microservice architecture using Spring Security OAuth and Okta, please see the `oauth` branch. 
+
+> The changes required to move from the Stormpath SDK to Spring Security OAuth can be viewed in [pull request #8](https://github.com/oktadeveloper/spring-boot-microservices-example/pull/8/files).
+
+**NOTE:** You'll need to change `security.oauth2.*` properties in the following directories for things to work with your Okta tenant.
+
+* [edge-service/src/main/resources/application.properties](../../tree/oauth/edge-service/src/main/resources/application.properties)
+* [beer-catalog-service/src/main/resources/application.properties](../../tree/oauth/beer-catalog-service/src/main/resources/application.properties)
+
+By default, you'll notice the properties are hard-coded to use [Keycloak](https://keycloak.org). If you'd like to use these settings, you can create a new project with [JHipster](http://www.jhipster.tech), select OAuth 2.0 / OIDC for authentication, then run its Docker image of Keycloak using:
+
+```bash
+docker-compose -f src/main/docker/keycloak.yml up
+```
+
+To configure everything for Okta, you can create a `~/.okta.env` file like the following:
+
+```bash
+#!/bin/bash
+
+# Okta with JHipster
+export SECURITY_OAUTH2_CLIENT_ACCESS_TOKEN_URI="https://{yourOktaDomain}.com/oauth2/default/v1/token"
+export SECURITY_OAUTH2_CLIENT_USER_AUTHORIZATION_URI="https://{yourOktaDomain}.com/oauth2/default/v1/authorize"
+export SECURITY_OAUTH2_RESOURCE_USER_INFO_URI="https://{yourOktaDomain}.com/oauth2/default/v1/userinfo"
+export SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI="https://{yourOktaDomain}.com/oauth2/default/v1/introspect"
+export SECURITY_OAUTH2_CLIENT_CLIENT_ID="{clientId}"
+export SECURITY_OAUTH2_CLIENT_CLIENT_SECRET="{clientSecret}"
+```
+
+Then run the following before starting any servers.
+
+```source
+source ~/.okta.env
+```
 
 ### Create Applications in Okta
 
@@ -66,6 +105,7 @@ You will need to [create an Okta developer account](https://github.com/stormpath
 export STORMPATH_CLIENT_BASEURL={baseUrl}
 export OKTA_APPLICATION_ID={applicationId}
 export OKTA_API_TOKEN={apiToken}
+export OKTA_AUTHORIZATIONSERVER_ID=default
 ```
 
 After you set these environment variables, make sure to restart your Spring Boot applications.
