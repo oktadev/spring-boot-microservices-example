@@ -80,7 +80,7 @@ Change `security.oauth2.*` properties in the following files to enter your clien
 * [edge-service/src/main/resources/application.properties](../../tree/oauth/edge-service/src/main/resources/application.properties)
 * [beer-catalog-service/src/main/resources/application.properties](../../tree/oauth/beer-catalog-service/src/main/resources/application.properties)
 
-You can also create a `~/.okta.env` file to overrride the properties in these files.
+You can also create a `~/.okta.env` file to override the properties in these files.
 
 ```bash
 #!/bin/bash
