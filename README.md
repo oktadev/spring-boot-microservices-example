@@ -62,8 +62,7 @@ To check out the branch that uses Spring Security OAuth, run the following comma
 git checkout oauth
 ```
 
-<!--
-The code in the `oauth` branch is described in [Secure a Spring Microservices Architecture with Spring Security and OAuth](https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-oauth).-->
+The code in the `oauth` branch is described in [Secure a Spring Microservices Architecture with Spring Security and OAuth 2.0](https://developer.okta.com/blog/2018/02/13/secure-spring-microservices-with-oauth).
 
 > The changes required to move from the Stormpath SDK to Spring Security OAuth can be viewed in [pull request #8](https://github.com/oktadeveloper/spring-boot-microservices-example/pull/8/files).
 
