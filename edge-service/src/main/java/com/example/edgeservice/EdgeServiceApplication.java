@@ -2,7 +2,6 @@ package com.example.edgeservice;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.stormpath.sdk.servlet.account.AccountStringResolver;
 import com.stormpath.sdk.servlet.http.Resolver;
 import feign.RequestInterceptor;
 import lombok.Data;

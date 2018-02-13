@@ -1,4 +1,4 @@
-package com.example;
+package com.example.beercatalogservice;
 
 import org.juiser.model.User;
 import org.springframework.stereotype.Controller;
