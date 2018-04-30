@@ -18,7 +18,7 @@ Please read [Build a Microservices Architecture for Microbrews with Spring Boot]
 To install this example application, run the following commands:
 
 ```bash
-git clone git@github.com:oktadeveloper/spring-boot-microservices-example.git
+git clone https://github.com/oktadeveloper/spring-boot-microservices-example.git
 cd spring-boot-microservices-example
 ```
 
