@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -18,7 +17,6 @@ import javax.persistence.Id;
 import java.util.stream.Stream;
 
 @EnableDiscoveryClient
-@EnableOAuth2Sso
 @SpringBootApplication
 public class BeerCatalogServiceApplication {
 
