@@ -18,7 +18,7 @@ Please read [Build a Microservices Architecture for Microbrews with Spring Boot]
 To install this example application, run the following commands:
 
 ```bash
-git clone git@github.com:oktadeveloper/spring-boot-microservices-example.git
+git clone https://github.com/oktadeveloper/spring-boot-microservices-example.git
 cd spring-boot-microservices-example
 ```
 
@@ -73,6 +73,8 @@ If you don't have one, [create an Okta Developer account](https://developer.okta
 * Application Name: `Spring OAuth`
 * Base URIs: `http://localhost:8081`
 * Login redirect URIs: `http://localhost:8081/login`
+
+You need to add a `roles` claim to your ID Token, so your groups in Okta are translated to Spring Security authorities. In your Okta developer console, navigate to **API** > **Authorization Servers**, click the **Authorization Servers** tab and edit the default one. Click the **Claims** tab and **Add Claim**. Name it "roles" and include it in the ID Token. Set the value type to "Groups" and set the filter to be a Regex of `.*`.
 
 Change `security.oauth2.*` properties in the following files to enter your client ID and client secret. 
 
