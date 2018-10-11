@@ -7,8 +7,8 @@ export class OktaService {
 
   constructor() {
     this.widget = new OktaSignIn({
-      baseUrl: 'https://dev-737523.oktapreview.com',
-      clientId: '0oafx05pu2pxhjgkC0h7',
+      baseUrl: 'https://dev-158606.oktapreview.com',
+      clientId: '0oadx7zrsjjgIMgQZ0h7',
       authParams: {
         issuer: 'default',
         responseType: ['id_token', 'token'],
