@@ -2,7 +2,6 @@ package com.example.beercatalogservice;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,7 +26,6 @@ public class BeerCatalogServiceApplication {
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 class Beer {
 

@@ -24,7 +24,7 @@
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
     "@angular/service-worker": "^5.2.4",
-    "@okta/okta-signin-widget": "^2.8.0",
+    "@okta/okta-signin-widget": "^2.13.0",
     "core-js": "^2.4.1",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
